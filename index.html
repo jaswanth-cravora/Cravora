@@ -17,7 +17,26 @@
       --line: #eee5dc;
       --white: #fff;
       --shadow: 0 12px 35px rgba(54, 36, 20, .08);
-    }
+    }/* Add this at the end of your existing CSS */
+
+.food-art {
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.food-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.food-type {
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 6px;
+}
 
     * { box-sizing: border-box; }
 
@@ -960,7 +979,13 @@ const foods = [
 ];
     ];
 
-    let selectedCategory = "All";
+    let selectedCategories<button class="cat" data-category="Veg" type="button">
+  <span>🟢</span> Veg
+</button>
+
+<button class="cat" data-category="Non-Veg" type="button">
+  <span>🔴</span> Non-Veg
+</button>
     let cart = {};
 
     const foodGrid = document.getElementById("foodGrid");
@@ -976,7 +1001,74 @@ const foods = [
       return "₹" + amount.toLocaleString("en-IN");
     }
 
-    function renderFoods() {
+    function function renderFoods() {
+  const query = searchInput.value.trim().toLowerCase();
+
+  const filtered = foods.filter(food => {
+    const categoryMatches =
+      selectedCategory === "All" ||
+      (
+        selectedCategory === "Veg" ||
+        selectedCategory === "Non-Veg"
+          ? food.foodType === selectedCategory
+          : food.category === selectedCategory
+      );
+
+    const searchMatches = [
+      food.name,
+      food.category,
+      food.description,
+      food.foodType
+    ].some(value => value.toLowerCase().includes(query));
+
+    return categoryMatches && searchMatches;
+  });
+
+  document.getElementById("resultCount").textContent =
+    filtered.length + (filtered.length === 1 ? " item" : " items");
+
+  if (filtered.length === 0) {
+    foodGrid.innerHTML = `
+      <div class="empty-results">
+        <div style="font-size:42px">🔎</div>
+        <h3>No dishes found</h3>
+        <p>Try another search or choose a different category.</p>
+      </div>`;
+    return;
+  }
+
+  foodGrid.innerHTML = filtered.map(food => `
+    <article class="food-card">
+      <div class="food-art">
+        <img
+          src="${food.image}"
+          alt="${food.name}"
+          loading="lazy"
+          onerror="this.style.display='none'; this.parentElement.classList.add('image-fallback'); this.parentElement.insertAdjacentText('beforeend', '${food.emoji}');"
+        >
+        <span class="food-tag">${food.tag}</span>
+      </div>
+
+      <div class="food-info">
+        <span class="food-type">
+          ${food.foodType === "Veg" ? "🟢 Veg" : "🔴 Non-Veg"}
+        </span>
+
+        <h3>${food.name}</h3>
+        <p>${food.description}</p>
+
+        <div class="food-bottom">
+          <span class="price">${formatPrice(food.price)}</span>
+          <button
+            class="add-button"
+            type="button"
+            data-add="${food.id}"
+          >+ Add</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
       const query = searchInput.value.trim().toLowerCase();
 
       const filtered = foods.filter(food => {
