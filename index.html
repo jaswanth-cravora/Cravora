@@ -3,366 +3,497 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#087f5b">
+<meta name="theme-color" content="#087F5B">
 <title>CRAVORA — Every Craving, Delivered</title>
 
 <style>
 :root {
-  --green: #087f5b;
+  --green: #087F5B;
   --dark-green: #056347;
-  --light-green: #e7f5ef;
-  --white: #ffffff;
-  --dark: #242424;
-  --grey: #f5f7f6;
-  --muted: #6b7280;
+  --black: #000000;
+  --white: #FFFFFF;
+  --light: #E7F5EF;
+  --grey: #666666;
+  --border: #E5E7EB;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  scroll-behavior: smooth;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-  background: var(--white);
-  color: var(--dark);
+  background: #FAFCFB;
+  color: #202020;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
 }
 
 header {
-  background: var(--white);
+  background: white;
   padding: 15px 6%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 15px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 12px #00000010;
 }
 
 .logo {
-  color: var(--green);
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 900;
-  letter-spacing: 1px;
+  letter-spacing: -1.5px;
 }
 
-.logo span {
-  color: var(--dark);
-}
+.logo .crav { color: var(--green); }
+.logo .ora { color: var(--black); }
 
 nav {
   display: flex;
-  align-items: center;
-  gap: 17px;
+  gap: 18px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-nav a {
-  text-decoration: none;
-  color: var(--dark);
-  font-weight: 600;
-  font-size: 14px;
+nav button {
+  background: transparent;
+  color: #222;
+  font-weight: 700;
 }
 
-nav a:hover {
+nav button:hover {
   color: var(--green);
 }
 
-.btn {
+.green-btn {
   background: var(--green);
   color: white;
-  border: none;
-  padding: 11px 18px;
+  padding: 11px 17px;
   border-radius: 8px;
-  cursor: pointer;
   font-weight: bold;
 }
 
-.btn:hover {
+.green-btn:hover {
   background: var(--dark-green);
 }
 
-section {
-  padding: 65px 7%;
+.outline-btn {
+  background: white;
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+main {
+  min-height: 65vh;
+}
+
+.page {
+  display: none;
+  padding: 35px 6%;
+}
+
+.page.active {
+  display: block;
 }
 
 .hero {
-  background: linear-gradient(120deg, #e7f5ef, #ffffff);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 35px;
-  flex-wrap: wrap;
-  min-height: 390px;
-}
-
-.hero-content {
-  flex: 1;
-  min-width: 260px;
+  background: var(--light);
+  padding: 55px 25px;
+  text-align: center;
+  border-radius: 18px;
+  margin-bottom: 35px;
 }
 
 .hero h1 {
-  font-size: clamp(36px, 5vw, 58px);
-  line-height: 1.12;
-  color: var(--dark);
-  margin-bottom: 15px;
-}
-
-.hero h1 span {
+  font-size: clamp(30px, 5vw, 48px);
   color: var(--green);
+  margin-bottom: 12px;
 }
 
 .hero p {
-  color: var(--muted);
+  color: #444;
   font-size: 17px;
-  margin-bottom: 25px;
+  line-height: 1.6;
 }
 
-.hero-art {
-  flex: 1;
-  min-width: 250px;
-  text-align: center;
-  font-size: 115px;
-  background: var(--white);
-  border-radius: 25px;
-  padding: 35px;
+.section-title {
+  font-size: 27px;
+  margin: 15px 0 22px;
 }
 
-.heading {
-  text-align: center;
-  margin-bottom: 30px;
+.cuisine-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
 }
 
-.heading h2 {
-  font-size: 32px;
-  color: var(--green);
-  margin-bottom: 8px;
-}
-
-.heading p {
-  color: var(--muted);
-}
-
-.search {
-  display: block;
-  width: min(500px, 100%);
-  margin: 0 auto 25px;
-  padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 15px;
-}
-
-.categories {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-}
-
-.category {
-  border: 1px solid var(--green);
-  color: var(--green);
+.cuisine-card {
   background: white;
-  padding: 9px 16px;
-  border-radius: 25px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 15px #0000000A;
   cursor: pointer;
+  transition: .2s;
 }
 
-.category.active,
-.category:hover {
+.cuisine-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px #00000014;
+}
+
+.cuisine-card img {
+  display: block;
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+}
+
+.cuisine-info {
+  padding: 18px;
+}
+
+.cuisine-info h3 {
+  color: var(--green);
+  font-size: 21px;
+  margin-bottom: 7px;
+}
+
+.cuisine-info p {
+  color: var(--grey);
+  line-height: 1.5;
+}
+
+.back-btn {
+  background: #E8F4EF;
+  color: var(--green);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  width: 100%;
+  max-width: 500px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  margin: 12px 0 18px;
+  outline-color: var(--green);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 22px;
+}
+
+.filter-btn {
+  padding: 9px 15px;
+  border-radius: 25px;
+  background: #EEEEEE;
+  color: #222;
+}
+
+.filter-btn.active {
   background: var(--green);
   color: white;
 }
 
 .food-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .food-card {
-  border: 1px solid #e8e8e8;
-  border-radius: 15px;
-  overflow: hidden;
   background: white;
-  transition: .2s;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.food-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px #00000012;
+.food-icon {
+  background: var(--light);
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+  font-size: 42px;
 }
 
-.food-image {
-  height: 145px;
-  display: grid;
-  place-items: center;
-  font-size: 75px;
-  background: var(--light-green);
+.food-card h3 {
+  font-size: 17px;
 }
 
-.food-info {
-  padding: 17px;
+.food-card p {
+  color: var(--grey);
+  font-size: 13px;
 }
 
-.food-info h3 {
-  margin-bottom: 8px;
+.food-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
 }
 
-.food-info p {
+.price {
   color: var(--green);
   font-weight: bold;
-  margin-bottom: 13px;
+  font-size: 18px;
 }
 
-.food-info button {
+.add-btn {
+  background: var(--green);
+  color: white;
+  padding: 9px 12px;
+  border-radius: 7px;
+  font-weight: bold;
+}
+
+.panel {
+  max-width: 750px;
+  margin: auto;
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.panel h2 {
+  margin-bottom: 18px;
+  color: var(--green);
+}
+
+.form-field {
+  margin: 14px 0;
+}
+
+.form-field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
   width: 100%;
+  padding: 12px;
+  border: 1px solid #D8D8D8;
+  border-radius: 8px;
+  outline-color: var(--green);
 }
 
-.light {
-  background: var(--grey);
+.form-field textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-controls button {
+  width: 27px;
+  height: 27px;
+  border-radius: 6px;
+  background: var(--light);
+  color: var(--green);
+  font-weight: bold;
+}
+
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  margin: 18px 0;
+  font-weight: bold;
+  font-size: 19px;
+}
+
+.payment-option {
+  display: block;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.payment-option input {
+  margin-right: 10px;
+}
+
+.order-card {
+  background: white;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 12px 0;
+}
+
+.tracking-map {
+  min-height: 230px;
+  background: #E7F5EF;
+  border: 1px solid #C6E6D7;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 25px;
+  margin-top: 15px;
+  color: var(--green);
 }
 
 .leadership {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-  max-width: 850px;
-  margin: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .leader-card {
   background: white;
-  border: 1px solid #e5e5e5;
-  border-radius: 18px;
-  padding: 35px 20px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
   text-align: center;
+  padding: 35px 20px;
 }
 
-.leader-card .initials {
+.leader-circle {
+  background: var(--green);
+  color: white;
   width: 105px;
   height: 105px;
   border-radius: 50%;
-  margin: 0 auto 20px;
   display: grid;
   place-items: center;
-  background: var(--green);
-  color: white;
+  margin: 0 auto 18px;
   font-size: 30px;
   font-weight: bold;
 }
 
 .leader-card h3 {
   font-size: 22px;
-  margin-bottom: 8px;
+  margin: 8px 0;
 }
 
 .leader-card p {
-  color: var(--green);
-  font-weight: bold;
+  color: var(--grey);
 }
 
-.panel {
-  max-width: 650px;
-  margin: auto;
-  padding: 25px;
-  background: white;
-  border: 1px solid #e5e5e5;
-  border-radius: 15px;
-}
-
-.panel h3 {
-  color: var(--green);
-  margin-bottom: 15px;
-}
-
-.field {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin: 8px 0 15px;
-  font-size: 15px;
-}
-
-.panel button {
-  margin: 5px 4px 5px 0;
-}
-
-.cart-row,
-.order-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  padding: 13px 0;
-}
-
-.total {
-  font-size: 21px;
-  font-weight: bold;
-  color: var(--green);
-  margin: 20px 0;
-}
-
-.status {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 20px;
-  background: var(--light-green);
-  color: var(--dark-green);
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.map-placeholder {
-  min-height: 220px;
-  border-radius: 12px;
-  background: #e7f5ef;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  padding: 25px;
-  color: var(--dark-green);
-  font-size: 18px;
+.empty {
+  color: var(--grey);
+  padding: 20px 0;
 }
 
 footer {
-  background: var(--dark);
+  background: #111;
   color: white;
   text-align: center;
-  padding: 30px 15px;
+  padding: 35px 15px;
+  margin-top: 40px;
 }
 
-footer strong {
-  color: #55d6a5;
-  font-size: 24px;
+footer .logo {
+  margin-bottom: 10px;
 }
 
-.hidden {
+footer p {
+  color: #CCCCCC;
+  margin-top: 9px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--green);
+  color: white;
+  padding: 13px 18px;
+  border-radius: 9px;
   display: none;
+  z-index: 200;
+  box-shadow: 0 5px 20px #0003;
 }
 
-@media(max-width: 700px) {
-  header {
-    justify-content: center;
+@media(max-width: 800px) {
+  .food-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
   nav {
+    gap: 12px;
+  }
+}
+
+@media(max-width: 550px) {
+  header {
+    padding: 13px 4%;
+  }
+
+  .logo {
+    font-size: 26px;
+  }
+
+  nav {
+    width: 100%;
     justify-content: center;
+    font-size: 13px;
   }
-  nav a {
-    font-size: 12px;
+
+  .page {
+    padding: 25px 4%;
   }
-  section {
-    padding: 45px 5%;
+
+  .cuisine-grid,
+  .leadership {
+    grid-template-columns: 1fr;
+  }
+
+  .cuisine-card img {
+    height: 210px;
+  }
+
+  .food-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 38px 15px;
   }
 }
 </style>
@@ -371,358 +502,779 @@ footer strong {
 <body>
 
 <header>
-  <div class="logo">C<span>RAVORA</span></div>
+  <div class="logo">
+    <span class="crav">CRAV</span><span class="ora">ORA</span>
+  </div>
+
   <nav>
-    <a href="#home">Home</a>
-    <a href="#menu">Menu</a>
-    <a href="#profile">Profile</a>
-    <a href="#cart">Cart <span id="cartCount">0</span></a>
-    <a href="#orders">Orders</a>
-    <a href="#tracking">Tracking</a>
-    <a href="#founder">Founder</a>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('profile')">Profile</button>
+    <button onclick="showPage('cart')">Cart (<span id="cartCount">0</span>)</button>
+    <button onclick="showPage('orders')">Orders</button>
+    <button onclick="showPage('tracking')">Tracking</button>
   </nav>
 </header>
 
-<section class="hero" id="home">
-  <div class="hero-content">
-    <h1>Every <span>Craving,</span><br>Delivered.</h1>
-    <p>Your favourite food, your favourite restaurants, delivered to your doorstep.</p>
-    <a href="#menu"><button class="btn">Explore Menu</button></a>
+<main>
+
+<!-- HOME: FOUR CUISINES FIRST -->
+<section id="home" class="page active">
+
+  <div class="hero">
+    <h1>Every Craving, Delivered.</h1>
+    <p>Discover delicious food from India and around the world.</p>
+    <p style="margin-top:12px;color:#087F5B;font-weight:bold">
+      Welcome to CRAVORA
+    </p>
   </div>
-  <div class="hero-art">🍔 🍕 🍛</div>
+
+  <h2 class="section-title">Explore Our Cuisines</h2>
+
+  <div class="cuisine-grid">
+
+    <article class="cuisine-card" onclick="openCuisine('Indian')">
+      <img src="images/indian-cuisine.jpg"
+           alt="Indian Cuisine">
+      <div class="cuisine-info">
+        <h3>🇮🇳 Indian Cuisine</h3>
+        <p>Biryani, South Indian, curries, snacks, desserts and more.</p>
+        <button class="green-btn" style="margin-top:13px">Explore Indian Food</button>
+      </div>
+    </article>
+
+    <article class="cuisine-card" onclick="openCuisine('Thai')">
+      <img src="images/thai-cuisine.jpg"
+           alt="Thai Cuisine">
+      <div class="cuisine-info">
+        <h3>🇹🇭 Thai Cuisine</h3>
+        <p>Pad Thai, Thai curries, soups, rice and desserts.</p>
+        <button class="green-btn" style="margin-top:13px">Explore Thai Food</button>
+      </div>
+    </article>
+
+    <article class="cuisine-card" onclick="openCuisine('Japanese')">
+      <img src="images/japanese-cuisine.jpg"
+           alt="Japanese Cuisine">
+      <div class="cuisine-info">
+        <h3>🇯🇵 Japanese Cuisine</h3>
+        <p>Sushi, ramen, tempura, gyoza and Japanese favourites.</p>
+        <button class="green-btn" style="margin-top:13px">Explore Japanese Food</button>
+      </div>
+    </article>
+
+    <article class="cuisine-card" onclick="openCuisine('Korean')">
+      <img src="images/korean-cuisine.jpg"
+           alt="Korean Cuisine">
+      <div class="cuisine-info">
+        <h3>🇰🇷 Korean Cuisine</h3>
+        <p>Bibimbap, tteokbokki, Korean chicken and more.</p>
+        <button class="green-btn" style="margin-top:13px">Explore Korean Food</button>
+      </div>
+    </article>
+
+  </div>
 </section>
 
-<section id="menu">
-  <div class="heading">
-    <h2>Explore Our Menu</h2>
-    <p>Discover food that makes every craving special.</p>
-  </div>
+<!-- CUISINE MENU -->
+<section id="menu" class="page">
 
-  <input class="search" id="search" placeholder="Search your favourite food..." oninput="renderFoods()">
+  <button class="back-btn" onclick="showPage('home')">← Back to Cuisines</button>
 
-  <div class="categories" id="categories">
-    <button class="category active" onclick="setCategory('All',this)">All</button>
-    <button class="category" onclick="setCategory('Biryani',this)">Biryani</button>
-    <button class="category" onclick="setCategory('Pizza',this)">Pizza</button>
-    <button class="category" onclick="setCategory('Burgers',this)">Burgers</button>
-    <button class="category" onclick="setCategory('South Indian',this)">South Indian</button>
-    <button class="category" onclick="setCategory('Desserts',this)">Desserts</button>
-    <button class="category" onclick="setCategory('Drinks',this)">Drinks</button>
-  </div>
+  <h1 id="menuTitle" class="section-title">Cuisine Menu</h1>
+  <p id="menuDescription">Choose your favourite food.</p>
 
-  <div class="food-grid" id="foodGrid"></div>
+  <input
+    id="foodSearch"
+    class="search-box"
+    type="search"
+    placeholder="Search food..."
+    oninput="renderFoods()"
+  >
+
+  <div id="filters" class="filters"></div>
+
+  <div id="foodGrid" class="food-grid"></div>
+
 </section>
 
-<!-- Founder and Co-founder sections -->
-<section class="light" id="founder">
-  <div class="heading">
-    <h2>Founder</h2>
-    <p>The vision behind Cravora.</p>
-  </div>
-  <div class="leadership">
-    <div class="leader-card">
-      <div class="initials">TJ</div>
-      <h3>T. JASWANTH REDDY</h3>
-      <p>Founder — CRAVORA</p>
-    </div>
-  </div>
-</section>
+<!-- PROFILE -->
+<section id="profile" class="page">
 
-<section id="cofounder">
-  <div class="heading">
-    <h2>Co-founder</h2>
-    <p>Building the vision together.</p>
-  </div>
-  <div class="leadership">
-    <div class="leader-card">
-      <div class="initials">GD</div>
-      <h3>G. DHANUSH</h3>
-      <p>Co-founder — CRAVORA</p>
-    </div>
-  </div>
-</section>
-
-<section class="light" id="profile">
-  <div class="heading">
+  <div class="panel">
     <h2>Customer Profile</h2>
-    <p>Access your Cravora customer account.</p>
+
+    <div class="form-field">
+      <label>Full Name</label>
+      <input id="profileName" placeholder="Enter your name">
+    </div>
+
+    <div class="form-field">
+      <label>Email Address</label>
+      <input id="profileEmail" type="email" placeholder="Enter email">
+    </div>
+
+    <div class="form-field">
+      <label>Phone Number</label>
+      <input id="profilePhone" type="tel" placeholder="Enter phone number">
+    </div>
+
+    <div class="form-field">
+      <label>Delivery Address</label>
+      <textarea id="profileAddress" placeholder="Enter your address"></textarea>
+    </div>
+
+    <button class="green-btn" onclick="saveProfile()">Save Profile</button>
+    <p class="empty" id="profileMessage"></p>
   </div>
-  <div class="panel">
-    <h3>Login / Register</h3>
-    <label for="customerName">Full name</label>
-    <input class="field" id="customerName" placeholder="Enter your name">
-    <label for="customerPhone">Mobile number</label>
-    <input class="field" id="customerPhone" type="tel" placeholder="Enter mobile number">
-    <button class="btn" onclick="saveProfile()">Save Demo Profile</button>
-    <p id="profileMessage"></p>
-    <p id="profileDetails"></p>
-  </div>
+
 </section>
 
-<section id="cart">
-  <div class="heading">
-    <h2>Your Cart</h2>
-    <p>Review your selected food items.</p>
-  </div>
+<!-- CART -->
+<section id="cart" class="page">
+
   <div class="panel">
-    <div id="cartItems">Your cart is empty.</div>
-    <div class="total" id="cartTotal">Total: ₹0</div>
-    <a href="#checkout"><button class="btn">Proceed to Checkout</button></a>
-    <button class="btn" onclick="clearCart()">Clear Cart</button>
+    <h2>Your Shopping Cart</h2>
+
+    <div id="cartItems"></div>
+
+    <div class="total-line">
+      <span>Total</span>
+      <span id="cartTotal">₹0</span>
+    </div>
+
+    <button class="green-btn" onclick="goToCheckout()">
+      Proceed to Checkout
+    </button>
+
+    <button class="outline-btn" onclick="showPage('home')">
+      Continue Shopping
+    </button>
   </div>
+
 </section>
 
-<section class="light" id="checkout">
-  <div class="heading">
+<!-- CHECKOUT -->
+<section id="checkout" class="page">
+
+  <div class="panel">
     <h2>Checkout</h2>
-    <p>Confirm your delivery details.</p>
+
+    <div class="form-field">
+      <label>Customer Name</label>
+      <input id="checkoutName" placeholder="Enter your name">
+    </div>
+
+    <div class="form-field">
+      <label>Phone Number</label>
+      <input id="checkoutPhone" type="tel" placeholder="Enter phone number">
+    </div>
+
+    <div class="form-field">
+      <label>Delivery Address</label>
+      <textarea id="checkoutAddress" placeholder="Enter delivery address"></textarea>
+    </div>
+
+    <h3 style="margin:22px 0 12px">Choose Payment Method</h3>
+
+    <label class="payment-option">
+      <input type="radio" name="payment" value="PhonePe" checked>
+      PhonePe
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="payment" value="Google Pay">
+      Google Pay
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="payment" value="Cravora Wallet">
+      Cravora Wallet
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="payment" value="Cash on Delivery">
+      Cash on Delivery
+    </label>
+
+    <div class="total-line">
+      <span>Order Total</span>
+      <span id="checkoutTotal">₹0</span>
+    </div>
+
+    <button class="green-btn" onclick="placeDemoOrder()">
+      Place Demo Order
+    </button>
+
+    <p class="empty">
+      Demo checkout only. No actual payment will be collected.
+    </p>
   </div>
-  <div class="panel">
-    <h3>Delivery Address</h3>
-    <input class="field" id="address" placeholder="House number, street and area">
-    <input class="field" id="city" placeholder="City">
-    <input class="field" id="pincode" placeholder="PIN code">
-    <div class="total" id="checkoutTotal">Total: ₹0</div>
-    <button class="btn" onclick="placeDemoOrder()">Continue to Payment</button>
-    <p id="checkoutMessage"></p>
-  </div>
+
 </section>
 
-<section id="payments">
-  <div class="heading">
-    <h2>Payments</h2>
-    <p>Choose your preferred payment option.</p>
-  </div>
+<!-- PAYMENT INFORMATION -->
+<section id="payments" class="page">
+
   <div class="panel">
-    <h3>Payment Methods</h3>
-    <label><input type="radio" name="payment" value="PhonePe"> PhonePe</label><br><br>
-    <label><input type="radio" name="payment" value="Google Pay"> Google Pay</label><br><br>
-    <label><input type="radio" name="payment" value="Cravora Wallet"> Cravora Wallet</label><br><br>
-    <label><input type="radio" name="payment" value="Cash on Delivery"> Cash on Delivery</label><br><br>
-    <button class="btn" onclick="confirmDemoPayment()">Confirm Demo Payment</button>
-    <p id="paymentMessage"></p>
-    <p><small>Demo options only. No money will be charged.</small></p>
+    <h2>Cravora Payments</h2>
+    <p>Available payment options planned for Cravora:</p>
+
+    <p style="margin-top:15px">📱 PhonePe</p>
+    <p style="margin-top:12px">💳 Google Pay</p>
+    <p style="margin-top:12px">🟢 Cravora Wallet</p>
+    <p style="margin-top:12px">💵 Cash on Delivery</p>
+
+    <p class="empty" style="margin-top:20px">
+      Payment options are displayed for demonstration.
+      Real payment processing requires a payment gateway,
+      merchant setup and secure backend integration.
+    </p>
   </div>
+
 </section>
 
-<section class="light" id="orders">
-  <div class="heading">
+<!-- ORDERS -->
+<section id="orders" class="page">
+
+  <div class="panel">
     <h2>My Orders</h2>
-    <p>View your Cravora order history.</p>
+    <div id="ordersList">
+      <p class="empty">You have no demo orders yet.</p>
+    </div>
   </div>
-  <div class="panel" id="orderList">
-    No orders yet.
-  </div>
+
 </section>
 
-<section id="tracking">
-  <div class="heading">
-    <h2>Live Order Tracking</h2>
-    <p>Follow your delivery journey.</p>
-  </div>
+<!-- TRACKING -->
+<section id="tracking" class="page">
+
   <div class="panel">
-    <div class="map-placeholder">
+    <h2>Track Your Food</h2>
+
+    <p>Track your Cravora order here.</p>
+
+    <div class="tracking-map">
       <div>
-        <div style="font-size:55px">📍 🛵</div>
-        <strong>Cravora Delivery Tracking</strong>
-        <p id="trackingStatus">Your delivery status will appear here after an order.</p>
+        <div style="font-size:50px">📍</div>
+        <h3>Delivery Tracking Preview</h3>
+        <p style="margin-top:8px">
+          Live driver location and route will appear here
+          after map and GPS integration.
+        </p>
       </div>
     </div>
-    <br>
-    <p><strong>Order status:</strong> <span class="status" id="statusBadge">No active order</span></p>
-    <p><small>Actual map location and delivery-partner GPS require backend and maps integration.</small></p>
+
+    <p class="empty">
+      This is a visual placeholder, not live GPS tracking.
+    </p>
   </div>
+
 </section>
+
+<!-- LEADERSHIP -->
+<section id="leadership" class="page">
+
+  <h2 class="section-title" style="text-align:center">Cravora Leadership</h2>
+
+  <div class="leadership">
+
+    <div class="leader-card">
+      <div class="leader-circle">TJ</div>
+      <h3>T. JASWANTH REDDY</h3>
+      <p>Founder</p>
+    </div>
+
+    <div class="leader-card">
+      <div class="leader-circle">GD</div>
+      <h3>G. DHANUSH</h3>
+      <p>Co-founder</p>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
 
 <footer>
-  <strong>CRAVORA</strong>
+  <div class="logo">
+    <span class="crav">CRAV</span><span class="ora" style="color:white">ORA</span>
+  </div>
+
   <p>Every Craving, Delivered.</p>
-  <p>© 2026 Cravora. All rights reserved.</p>
+  <p>Indian • Thai • Japanese • Korean</p>
+  <p style="margin-top:18px">© 2026 Cravora. All rights reserved.</p>
+  <p style="margin-top:12px">
+    <button onclick="showPage('leadership')" class="outline-btn">
+      Founder & Co-founder
+    </button>
+  </p>
 </footer>
 
+<div id="toast" class="toast"></div>
+
 <script>
+
+// FOOD CATALOGUE
+// Prices are sample prices and should be confirmed by restaurant partners.
+
 const foods = [
-  {id:1,name:"Hyderabadi Chicken Biryani",price:220,category:"Biryani",emoji:"🍛"},
-  {id:2,name:"Paneer Biryani",price:180,category:"Biryani",emoji:"🍚"},
-  {id:3,name:"Margherita Pizza",price:199,category:"Pizza",emoji:"🍕"},
-  {id:4,name:"Farmhouse Pizza",price:279,category:"Pizza",emoji:"🍕"},
-  {id:5,name:"Classic Crispy Burger",price:149,category:"Burgers",emoji:"🍔"},
-  {id:6,name:"Double Cheese Burger",price:219,category:"Burgers",emoji:"🍔"},
-  {id:7,name:"Masala Dosa",price:100,category:"South Indian",emoji:"🥞"},
-  {id:8,name:"Idli & Sambar",price:70,category:"South Indian",emoji:"🥣"},
-  {id:9,name:"Chocolate Brownie",price:110,category:"Desserts",emoji:"🍫"},
-  {id:10,name:"Classic Cheesecake",price:160,category:"Desserts",emoji:"🍰"},
-  {id:11,name:"Cold Coffee",price:99,category:"Drinks",emoji:"🥤"},
-  {id:12,name:"Fresh Lemonade",price:60,category:"Drinks",emoji:"🍋"}
+
+  // INDIAN CUISINE - BIRYANI
+  {name:"Hyderabadi Chicken Dum Biryani",price:220,cuisine:"Indian",category:"Biryani",icon:"🍛"},
+  {name:"Chicken Fry Piece Biryani",price:240,cuisine:"Indian",category:"Biryani",icon:"🍗"},
+  {name:"Chicken 65 Biryani",price:250,cuisine:"Indian",category:"Biryani",icon:"🍛"},
+  {name:"Chicken Boneless Biryani",price:260,cuisine:"Indian",category:"Biryani",icon:"🍗"},
+  {name:"Chicken Lollipop Biryani",price:270,cuisine:"Indian",category:"Biryani",icon:"🍛"},
+  {name:"Special Chicken Biryani",price:280,cuisine:"Indian",category:"Biryani",icon:"🍛"},
+  {name:"Mutton Dum Biryani",price:320,cuisine:"Indian",category:"Biryani",icon:"🍖"},
+  {name:"Mutton Fry Piece Biryani",price:340,cuisine:"Indian",category:"Biryani",icon:"🍖"},
+  {name:"Egg Biryani",price:150,cuisine:"Indian",category:"Biryani",icon:"🍳"},
+  {name:"Paneer Biryani",price:180,cuisine:"Indian",category:"Biryani",icon:"🍛"},
+  {name:"Mushroom Biryani",price:170,cuisine:"Indian",category:"Biryani",icon:"🍄"},
+  {name:"Veg Dum Biryani",price:160,cuisine:"Indian",category:"Biryani",icon:"🥘"},
+  {name:"Prawn Biryani",price:300,cuisine:"Indian",category:"Biryani",icon:"🍤"},
+  {name:"Fish Biryani",price:280,cuisine:"Indian",category:"Biryani",icon:"🐟"},
+  {name:"Family Pack Chicken Biryani",price:550,cuisine:"Indian",category:"Biryani",icon:"🍛"},
+
+  // INDIAN PIZZA
+  {name:"Margherita Pizza",price:199,cuisine:"Indian",category:"Pizza",icon:"🍕"},
+  {name:"Farmhouse Pizza",price:279,cuisine:"Indian",category:"Pizza",icon:"🍕"},
+  {name:"Paneer Tikka Pizza",price:259,cuisine:"Indian",category:"Pizza",icon:"🍕"},
+  {name:"Corn Cheese Pizza",price:229,cuisine:"Indian",category:"Pizza",icon:"🍕"},
+  {name:"Veg Supreme Pizza",price:299,cuisine:"Indian",category:"Pizza",icon:"🍕"},
+  {name:"Chicken Tikka Pizza",price:299,cuisine:"Indian",category:"Pizza",icon:"🍕"},
+  {name:"BBQ Chicken Pizza",price:319,cuisine:"Indian",category:"Pizza",icon:"🍕"},
+
+  // BURGERS
+  {name:"Classic Veg Burger",price:119,cuisine:"Indian",category:"Burgers",icon:"🍔"},
+  {name:"Crispy Chicken Burger",price:149,cuisine:"Indian",category:"Burgers",icon:"🍔"},
+  {name:"Double Cheese Burger",price:219,cuisine:"Indian",category:"Burgers",icon:"🍔"},
+  {name:"Paneer Burger",price:159,cuisine:"Indian",category:"Burgers",icon:"🍔"},
+  {name:"Chicken Cheese Burger",price:199,cuisine:"Indian",category:"Burgers",icon:"🍔"},
+
+  // SOUTH INDIAN
+  {name:"Idli and Sambar",price:70,cuisine:"Indian",category:"South Indian",icon:"🥘"},
+  {name:"Medu Vada",price:60,cuisine:"Indian",category:"South Indian",icon:"🍩"},
+  {name:"Masala Dosa",price:100,cuisine:"Indian",category:"South Indian",icon:"🥞"},
+  {name:"Plain Dosa",price:80,cuisine:"Indian",category:"South Indian",icon:"🥞"},
+  {name:"Onion Dosa",price:110,cuisine:"Indian",category:"South Indian",icon:"🥞"},
+  {name:"Mysore Masala Dosa",price:130,cuisine:"Indian",category:"South Indian",icon:"🥞"},
+  {name:"Pesarattu",price:100,cuisine:"Indian",category:"South Indian",icon:"🥞"},
+  {name:"Uttapam",price:110,cuisine:"Indian",category:"South Indian",icon:"🥘"},
+  {name:"Pongal",price:90,cuisine:"Indian",category:"South Indian",icon:"🥣"},
+  {name:"Andhra Meals",price:160,cuisine:"Indian",category:"South Indian",icon:"🍱"},
+
+  // INDIAN FAST FOOD
+  {name:"Veg Sandwich",price:100,cuisine:"Indian",category:"Fast Food",icon:"🥪"},
+  {name:"Chicken Sandwich",price:140,cuisine:"Indian",category:"Fast Food",icon:"🥪"},
+  {name:"Veg Wrap",price:120,cuisine:"Indian",category:"Fast Food",icon:"🌯"},
+  {name:"Chicken Roll",price:150,cuisine:"Indian",category:"Fast Food",icon:"🌯"},
+  {name:"French Fries",price:90,cuisine:"Indian",category:"Fast Food",icon:"🍟"},
+  {name:"Peri Peri Fries",price:120,cuisine:"Indian",category:"Fast Food",icon:"🍟"},
+  {name:"Veg Momos",price:110,cuisine:"Indian",category:"Fast Food",icon:"🥟"},
+  {name:"Chicken Momos",price:140,cuisine:"Indian",category:"Fast Food",icon:"🥟"},
+
+  // INDIAN MAIN COURSE
+  {name:"Butter Chicken",price:260,cuisine:"Indian",category:"Main Course",icon:"🍛"},
+  {name:"Paneer Butter Masala",price:210,cuisine:"Indian",category:"Main Course",icon:"🥘"},
+  {name:"Dal Tadka",price:160,cuisine:"Indian",category:"Main Course",icon:"🥣"},
+  {name:"Chicken Curry",price:240,cuisine:"Indian",category:"Main Course",icon:"🍗"},
+  {name:"Mutton Curry",price:300,cuisine:"Indian",category:"Main Course",icon:"🍖"},
+  {name:"Veg Fried Rice",price:140,cuisine:"Indian",category:"Main Course",icon:"🍚"},
+  {name:"Chicken Fried Rice",price:180,cuisine:"Indian",category:"Main Course",icon:"🍚"},
+  {name:"Veg Noodles",price:140,cuisine:"Indian",category:"Main Course",icon:"🍜"},
+  {name:"Chicken Noodles",price:180,cuisine:"Indian",category:"Main Course",icon:"🍜"},
+  {name:"Butter Naan",price:45,cuisine:"Indian",category:"Main Course",icon:"🫓"},
+  {name:"Garlic Naan",price:60,cuisine:"Indian",category:"Main Course",icon:"🫓"},
+  {name:"Tandoori Roti",price:35,cuisine:"Indian",category:"Main Course",icon:"🫓"},
+
+  // INDIAN DESSERTS AND DRINKS
+  {name:"Gulab Jamun",price:80,cuisine:"Indian",category:"Desserts",icon:"🍮"},
+  {name:"Rasmalai",price:110,cuisine:"Indian",category:"Desserts",icon:"🍨"},
+  {name:"Chocolate Brownie",price:110,cuisine:"Indian",category:"Desserts",icon:"🍫"},
+  {name:"Cheesecake",price:160,cuisine:"Indian",category:"Desserts",icon:"🍰"},
+  {name:"Ice Cream",price:90,cuisine:"Indian",category:"Desserts",icon:"🍦"},
+  {name:"Chocolate Cake",price:130,cuisine:"Indian",category:"Desserts",icon:"🍰"},
+  {name:"Cold Coffee",price:99,cuisine:"Indian",category:"Drinks",icon:"🥤"},
+  {name:"Fresh Lemonade",price:60,cuisine:"Indian",category:"Drinks",icon:"🍋"},
+  {name:"Mango Shake",price:120,cuisine:"Indian",category:"Drinks",icon:"🥭"},
+  {name:"Vanilla Milkshake",price:110,cuisine:"Indian",category:"Drinks",icon:"🥤"},
+  {name:"Orange Juice",price:90,cuisine:"Indian",category:"Drinks",icon:"🍊"},
+  {name:"Masala Tea",price:30,cuisine:"Indian",category:"Drinks",icon:"☕"},
+  {name:"Filter Coffee",price:40,cuisine:"Indian",category:"Drinks",icon:"☕"},
+  {name:"Bottled Water",price:20,cuisine:"Indian",category:"Drinks",icon:"💧"},
+
+  // THAI CUISINE
+  {name:"Pad Thai Noodles",price:240,cuisine:"Thai",category:"Noodles",icon:"🍜"},
+  {name:"Thai Green Curry",price:260,cuisine:"Thai",category:"Curries",icon:"🍛"},
+  {name:"Thai Red Curry",price:260,cuisine:"Thai",category:"Curries",icon:"🍛"},
+  {name:"Thai Basil Fried Rice",price:220,cuisine:"Thai",category:"Rice",icon:"🍚"},
+  {name:"Tom Yum Soup",price:180,cuisine:"Thai",category:"Soups",icon:"🥣"},
+  {name:"Thai Spring Rolls",price:140,cuisine:"Thai",category:"Starters",icon:"🥟"},
+  {name:"Thai Mango Sticky Rice",price:170,cuisine:"Thai",category:"Desserts",icon:"🥭"},
+  {name:"Thai Pineapple Fried Rice",price:230,cuisine:"Thai",category:"Rice",icon:"🍍"},
+  {name:"Thai Coconut Soup",price:190,cuisine:"Thai",category:"Soups",icon:"🥥"},
+  {name:"Thai Papaya Salad",price:160,cuisine:"Thai",category:"Starters",icon:"🥗"},
+
+  // JAPANESE CUISINE
+  {name:"Vegetable Sushi Rolls",price:220,cuisine:"Japanese",category:"Sushi",icon:"🍣"},
+  {name:"California Rolls",price:280,cuisine:"Japanese",category:"Sushi",icon:"🍣"},
+  {name:"Chicken Ramen",price:260,cuisine:"Japanese",category:"Noodles",icon:"🍜"},
+  {name:"Vegetable Ramen",price:220,cuisine:"Japanese",category:"Noodles",icon:"🍜"},
+  {name:"Chicken Teriyaki Rice",price:280,cuisine:"Japanese",category:"Rice",icon:"🍱"},
+  {name:"Vegetable Tempura",price:190,cuisine:"Japanese",category:"Starters",icon:"🥢"},
+  {name:"Gyoza Dumplings",price:180,cuisine:"Japanese",category:"Starters",icon:"🥟"},
+  {name:"Udon Noodles",price:230,cuisine:"Japanese",category:"Noodles",icon:"🍜"},
+  {name:"Miso Soup",price:120,cuisine:"Japanese",category:"Soups",icon:"🥣"},
+  {name:"Mochi",price:150,cuisine:"Japanese",category:"Desserts",icon:"🍡"},
+
+  // KOREAN CUISINE
+  {name:"Korean Fried Chicken",price:280,cuisine:"Korean",category:"Chicken",icon:"🍗"},
+  {name:"Vegetable Bibimbap",price:230,cuisine:"Korean",category:"Rice",icon:"🍚"},
+  {name:"Chicken Bibimbap",price:270,cuisine:"Korean",category:"Rice",icon:"🍱"},
+  {name:"Tteokbokki",price:190,cuisine:"Korean",category:"Street Food",icon:"🍢"},
+  {name:"Kimchi Fried Rice",price:210,cuisine:"Korean",category:"Rice",icon:"🍚"},
+  {name:"Korean Ramen",price:190,cuisine:"Korean",category:"Noodles",icon:"🍜"},
+  {name:"Korean Corn Dogs",price:170,cuisine:"Korean",category:"Street Food",icon:"🌭"},
+  {name:"Korean Vegetable Pancake",price:160,cuisine:"Korean",category:"Starters",icon:"🥞"},
+  {name:"Japchae Noodles",price:220,cuisine:"Korean",category:"Noodles",icon:"🍜"},
+  {name:"Hotteok",price:120,cuisine:"Korean",category:"Desserts",icon:"🥞"}
+
 ];
 
+let currentCuisine = "Indian";
+let currentCategory = "All";
 let cart = [];
-let category = "All";
-let currentOrder = null;
+let orders = [];
 
-function renderFoods() {
-  const search = document.getElementById("search").value.toLowerCase();
-  const filtered = foods.filter(food =>
-    (category === "All" || food.category === category) &&
-    food.name.toLowerCase().includes(search)
-  );
+const cuisineDescriptions = {
+  Indian: "Discover Indian biryani, curries, South Indian dishes, snacks and more.",
+  Thai: "Explore Thai noodles, curries, soups, rice and desserts.",
+  Japanese: "Enjoy Japanese sushi, ramen, tempura, rice and more.",
+  Korean: "Discover Korean street food, noodles, rice and desserts."
+};
 
-  document.getElementById("foodGrid").innerHTML = filtered.map(food => `
-    <div class="food-card">
-      <div class="food-image">${food.emoji}</div>
-      <div class="food-info">
-        <h3>${food.name}</h3>
-        <p>₹${food.price}</p>
-        <button class="btn" onclick="addToCart(${food.id})">Add to Cart</button>
-      </div>
-    </div>
-  `).join("") || "<p>No food items found.</p>";
+const cuisineCategories = {
+  Indian: ["All","Biryani","Pizza","Burgers","South Indian","Fast Food","Main Course","Desserts","Drinks"],
+  Thai: ["All","Noodles","Curries","Rice","Soups","Starters","Desserts"],
+  Japanese: ["All","Sushi","Noodles","Rice","Starters","Soups","Desserts"],
+  Korean: ["All","Chicken","Rice","Street Food","Noodles","Starters","Desserts"]
+};
+
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  const page = document.getElementById(pageId);
+  if (page) page.classList.add("active");
+
+  if (pageId === "cart") renderCart();
+  if (pageId === "orders") renderOrders();
+  if (pageId === "checkout") updateCheckoutTotal();
+
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function setCategory(value, button) {
-  category = value;
-  document.querySelectorAll(".category").forEach(b => b.classList.remove("active"));
-  button.classList.add("active");
+function openCuisine(cuisine) {
+  currentCuisine = cuisine;
+  currentCategory = "All";
+
+  document.getElementById("menuTitle").textContent =
+    cuisine + " Cuisine";
+
+  document.getElementById("menuDescription").textContent =
+    cuisineDescriptions[cuisine];
+
+  document.getElementById("foodSearch").value = "";
+
+  renderFilters();
+  renderFoods();
+  showPage("menu");
+}
+
+function renderFilters() {
+  const filters = document.getElementById("filters");
+
+  filters.innerHTML = cuisineCategories[currentCuisine]
+    .map(category => `
+      <button
+        class="filter-btn ${category === currentCategory ? "active" : ""}"
+        onclick="selectCategory('${category}')">
+        ${category}
+      </button>
+    `).join("");
+}
+
+function selectCategory(category) {
+  currentCategory = category;
+  renderFilters();
   renderFoods();
 }
 
-function addToCart(id) {
-  const item = cart.find(x => x.id === id);
-  if (item) item.quantity++;
-  else cart.push({...foods.find(x => x.id === id), quantity:1});
-  updateCart();
+function renderFoods() {
+  const search = document.getElementById("foodSearch")
+    .value.toLowerCase();
+
+  const filtered = foods.filter(food => {
+    const sameCuisine = food.cuisine === currentCuisine;
+    const sameCategory =
+      currentCategory === "All" ||
+      food.category === currentCategory;
+    const matchesSearch = food.name.toLowerCase().includes(search);
+
+    return sameCuisine && sameCategory && matchesSearch;
+  });
+
+  const grid = document.getElementById("foodGrid");
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p class="empty">No matching food found.</p>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(food => {
+    const index = foods.indexOf(food);
+
+    return `
+      <article class="food-card">
+        <div class="food-icon">${food.icon}</div>
+        <h3>${food.name}</h3>
+        <p>${food.cuisine} Cuisine · ${food.category}</p>
+        <div class="food-bottom">
+          <span class="price">₹${food.price}</span>
+          <button class="add-btn" onclick="addToCart(${index})">
+            Add +
+          </button>
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
-function changeQuantity(id, amount) {
-  const item = cart.find(x => x.id === id);
-  if (!item) return;
-  item.quantity += amount;
-  if (item.quantity <= 0) cart = cart.filter(x => x.id !== id);
-  updateCart();
+function addToCart(index) {
+  const food = foods[index];
+  const existing = cart.find(item => item.name === food.name);
+
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({...food,quantity:1});
+  }
+
+  updateCartCount();
+  showToast(food.name + " added to cart");
 }
 
-function updateCart() {
-  const count = cart.reduce((sum,item) => sum + item.quantity,0);
-  const total = cart.reduce((sum,item) => sum + item.price * item.quantity,0);
+function changeQuantity(index,amount) {
+  cart[index].quantity += amount;
+
+  if (cart[index].quantity <= 0) {
+    cart.splice(index,1);
+  }
+
+  updateCartCount();
+  renderCart();
+}
+
+function updateCartCount() {
+  const count = cart.reduce(
+    (sum,item) => sum + item.quantity,0
+  );
 
   document.getElementById("cartCount").textContent = count;
-  document.getElementById("cartTotal").textContent = "Total: ₹" + total;
-  document.getElementById("checkoutTotal").textContent = "Total: ₹" + total;
-
-  document.getElementById("cartItems").innerHTML = cart.length
-    ? cart.map(item => `
-      <div class="cart-row">
-        <div>
-          <strong>${item.name}</strong><br>
-          ₹${item.price} × ${item.quantity}
-        </div>
-        <div>
-          <button onclick="changeQuantity(${item.id},-1)">−</button>
-          ${item.quantity}
-          <button onclick="changeQuantity(${item.id},1)">+</button>
-        </div>
-      </div>
-    `).join("")
-    : "Your cart is empty.";
 }
 
-function clearCart() {
-  cart = [];
-  updateCart();
+function getCartTotal() {
+  return cart.reduce(
+    (sum,item) => sum + item.price * item.quantity,0
+  );
+}
+
+function renderCart() {
+  const container = document.getElementById("cartItems");
+
+  if (cart.length === 0) {
+    container.innerHTML =
+      '<p class="empty">Your cart is empty. Explore our cuisines to add food.</p>';
+  } else {
+    container.innerHTML = cart.map((item,index) => `
+      <div class="cart-item">
+        <div>
+          <strong>${item.icon} ${item.name}</strong>
+          <p>₹${item.price} each</p>
+        </div>
+
+        <div class="qty-controls">
+          <button onclick="changeQuantity(${index},-1)">−</button>
+          <strong>${item.quantity}</strong>
+          <button onclick="changeQuantity(${index},1)">+</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("cartTotal").textContent =
+    "₹" + getCartTotal();
+}
+
+function goToCheckout() {
+  if (cart.length === 0) {
+    showToast("Please add food to your cart first.");
+    return;
+  }
+
+  const profile = getProfile();
+
+  document.getElementById("checkoutName").value =
+    profile.name || "";
+
+  document.getElementById("checkoutPhone").value =
+    profile.phone || "";
+
+  document.getElementById("checkoutAddress").value =
+    profile.address || "";
+
+  updateCheckoutTotal();
+  showPage("checkout");
+}
+
+function updateCheckoutTotal() {
+  document.getElementById("checkoutTotal").textContent =
+    "₹" + getCartTotal();
 }
 
 function saveProfile() {
-  const name = document.getElementById("customerName").value.trim();
-  const phone = document.getElementById("customerPhone").value.trim();
+  const profile = {
+    name: document.getElementById("profileName").value.trim(),
+    email: document.getElementById("profileEmail").value.trim(),
+    phone: document.getElementById("profilePhone").value.trim(),
+    address: document.getElementById("profileAddress").value.trim()
+  };
 
-  if (!name || !phone) {
-    document.getElementById("profileMessage").textContent =
-      "Please enter your name and mobile number.";
-    return;
-  }
+  localStorage.setItem("cravoraProfile",JSON.stringify(profile));
 
   document.getElementById("profileMessage").textContent =
-    "Demo profile saved in this page session.";
-  document.getElementById("profileDetails").textContent =
-    "Customer: " + name + " | Mobile: " + phone;
+    "Profile saved on this browser.";
+}
+
+function getProfile() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("cravoraProfile") || "{}"
+    );
+  } catch {
+    return {};
+  }
+}
+
+function loadProfile() {
+  const profile = getProfile();
+
+  document.getElementById("profileName").value =
+    profile.name || "";
+
+  document.getElementById("profileEmail").value =
+    profile.email || "";
+
+  document.getElementById("profilePhone").value =
+    profile.phone || "";
+
+  document.getElementById("profileAddress").value =
+    profile.address || "";
 }
 
 function placeDemoOrder() {
-  if (!cart.length) {
-    document.getElementById("checkoutMessage").textContent =
-      "Please add food items to your cart first.";
+  if (cart.length === 0) {
+    showToast("Your cart is empty.");
     return;
   }
 
-  const address = document.getElementById("address").value.trim();
-  const city = document.getElementById("city").value.trim();
-  const pincode = document.getElementById("pincode").value.trim();
+  const name =
+    document.getElementById("checkoutName").value.trim();
 
-  if (!address || !city || !pincode) {
-    document.getElementById("checkoutMessage").textContent =
-      "Please complete your delivery address.";
+  const phone =
+    document.getElementById("checkoutPhone").value.trim();
+
+  const address =
+    document.getElementById("checkoutAddress").value.trim();
+
+  const payment = document.querySelector(
+    'input[name="payment"]:checked'
+  ).value;
+
+  if (!name || !phone || !address) {
+    showToast("Please complete your delivery details.");
     return;
   }
 
-  currentOrder = {
-    id: "CRV" + Date.now().toString().slice(-6),
+  const order = {
+    id: "CRV" + Date.now().toString().slice(-7),
+    name,
+    phone,
+    address,
+    payment,
     items: cart.map(item => ({...item})),
-    total: cart.reduce((sum,item) => sum + item.price * item.quantity,0),
-    address: address + ", " + city + " - " + pincode,
-    status: "Awaiting demo payment",
-    payment: "Not selected"
+    total: getCartTotal(),
+    date: new Date().toLocaleString(),
+    status: "Demo order placed"
   };
 
-  document.getElementById("checkoutMessage").textContent =
-    "Demo order prepared. Choose a payment option below.";
-  document.getElementById("payments").scrollIntoView();
-}
-
-function confirmDemoPayment() {
-  if (!currentOrder) {
-    document.getElementById("paymentMessage").textContent =
-      "Please complete checkout first.";
-    return;
-  }
-
-  const selected = document.querySelector('input[name="payment"]:checked');
-
-  if (!selected) {
-    document.getElementById("paymentMessage").textContent =
-      "Please select a payment method.";
-    return;
-  }
-
-  currentOrder.payment = selected.value;
-  currentOrder.status = "Demo order placed";
-  document.getElementById("paymentMessage").textContent =
-    "Demo order created. No real payment was made.";
-
-  document.getElementById("orderList").innerHTML = `
-    <div class="order-row">
-      <div>
-        <strong>Order ${currentOrder.id}</strong><br>
-        ${currentOrder.items.map(i => i.name + " × " + i.quantity).join("<br>")}
-        <br><small>${currentOrder.address}</small>
-      </div>
-      <strong>₹${currentOrder.total}</strong>
-    </div>
-    <p>Payment option: ${currentOrder.payment}</p>
-    <span class="status">${currentOrder.status}</span>
-  `;
-
-  document.getElementById("trackingStatus").textContent =
-    "Demo order created. Delivery partner has not been assigned.";
-  document.getElementById("statusBadge").textContent =
-    "Demo order placed";
+  orders.unshift(order);
 
   cart = [];
-  updateCart();
-  document.getElementById("orders").scrollIntoView();
+  updateCartCount();
+  renderOrders();
+
+  showToast("Demo order created successfully!");
+
+  showPage("orders");
 }
 
-renderFoods();
-updateCart();
+function renderOrders() {
+  const container = document.getElementById("ordersList");
+
+  if (orders.length === 0) {
+    container.innerHTML =
+      '<p class="empty">You have no demo orders yet.</p>';
+    return;
+  }
+
+  container.innerHTML = orders.map(order => `
+    <div class="order-card">
+      <h3>Order ${order.id}</h3>
+      <p style="margin-top:8px">${order.date}</p>
+      <p style="margin-top:8px">Payment: ${order.payment}</p>
+      <p style="margin-top:8px">Status: ${order.status}</p>
+      <p style="margin-top:8px;font-weight:bold;color:#087F5B">
+        Total: ₹${order.total}
+      </p>
+      <button class="green-btn"
+        style="margin-top:12px"
+        onclick="showPage('tracking')">
+        Track Order Preview
+      </button>
+    </div>
+  `).join("");
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+
+  toast.textContent = message;
+  toast.style.display = "block";
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+    toast.style.display = "none";
+  },2500);
+}
+
+loadProfile();
+updateCartCount();
+
 </script>
 
 </body>
