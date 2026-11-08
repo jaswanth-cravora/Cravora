@@ -5,1832 +5,525 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#ff7a1a">
 <title>Cravora — Every Craving, Delivered</title>
-<meta name="description" content="Discover delicious food with Cravora.">
-
 <style>
-:root{
+:root {
   --orange:#ff7a1a;
-  --orange-dark:#e86108;
+  --dark:#e86108;
   --cream:#fffaf5;
   --ink:#24201d;
   --muted:#77716b;
   --line:#eee5dc;
   --white:#fff;
-  --shadow:0 12px 35px rgba(54,36,20,.08);
 }
-
-*{box-sizing:border-box}
-
-html{scroll-behavior:smooth}
-
-body{
+* {box-sizing:border-box}
+body {
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   color:var(--ink);
   background:var(--cream);
 }
-
-button,input{font:inherit}
-button{cursor:pointer}
-a{text-decoration:none;color:inherit}
-
-.container{
-  width:min(1180px,calc(100% - 40px));
-  margin:auto;
+button,input,textarea {font:inherit}
+button,a {cursor:pointer}
+a {color:inherit;text-decoration:none}
+.container {width:min(1180px,calc(100% - 32px));margin:auto}
+header {
+  position:sticky;top:0;z-index:10;
+  background:#fffaf5;border-bottom:1px solid var(--line);
 }
-
-/* HEADER */
-
-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:rgba(255,250,245,.97);
-  border-bottom:1px solid var(--line);
-  backdrop-filter:blur(12px);
+.nav {
+  min-height:72px;display:flex;align-items:center;
+  justify-content:space-between;gap:15px;flex-wrap:wrap;
 }
-
-.nav{
-  min-height:76px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
+.brand {font-size:27px;font-weight:950;letter-spacing:-1px}
+.brand span {color:var(--orange)}
+.nav-links {display:flex;gap:15px;flex-wrap:wrap}
+.nav-links button {
+  border:0;background:transparent;font-weight:700;color:var(--ink);
 }
-
-.brand{
-  font-size:29px;
-  font-weight:950;
-  letter-spacing:-1.5px;
+.nav-links button:hover {color:var(--orange)}
+.primary,.cart-button,.action {
+  border:0;border-radius:25px;padding:12px 18px;
+  background:var(--orange);color:white;font-weight:800;
 }
-
-.brand span,
-.footer-brand span{
-  color:var(--orange);
+.primary:hover,.cart-button:hover,.action:hover {background:var(--dark)}
+.page {display:none;padding:35px 0 65px;min-height:70vh}
+.page.active {display:block}
+.hero {
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:30px;align-items:center;padding:60px 0;
 }
-
-.nav-right{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.search-wrap{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background:white;
-  border:1px solid var(--line);
-  border-radius:30px;
-  padding:10px 15px;
-  width:250px;
-}
-
-.search-wrap input{
-  width:100%;
-  border:0;
-  outline:0;
-  background:transparent;
-}
-
-.cart-button,
-.primary,
-.checkout-button{
-  border:0;
-  border-radius:30px;
-  background:var(--orange);
-  color:white;
-  font-weight:800;
-  padding:13px 20px;
-  transition:.2s;
-}
-
-.cart-button:hover,
-.primary:hover,
-.checkout-button:hover{
-  background:var(--orange-dark);
-  transform:translateY(-1px);
-}
-
-/* HERO */
-
-.hero{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  align-items:center;
-  gap:40px;
-  padding:70px 0 55px;
-}
-
-.eyebrow{
-  display:inline-block;
-  background:#ffead8;
-  color:#a84300;
-  padding:9px 14px;
-  border-radius:30px;
-  font-size:13px;
-  font-weight:800;
-  margin-bottom:18px;
-}
-
-.hero h1{
-  font-size:clamp(42px,6vw,75px);
-  line-height:1.03;
-  letter-spacing:-3px;
-  margin:0 0 20px;
-}
-
-.hero h1 span{color:var(--orange)}
-
-.hero p{
-  max-width:510px;
-  color:var(--muted);
-  line-height:1.8;
-  font-size:16px;
-  margin-bottom:28px;
-}
-
-.hero-art{
-  min-height:350px;
-  position:relative;
-  display:grid;
-  place-items:center;
+.hero h1 {font-size:clamp(42px,7vw,72px);line-height:1.02;margin:15px 0}
+.hero h1 span {color:var(--orange)}
+.hero p {color:var(--muted);line-height:1.8}
+.hero-art {
+  min-height:300px;border-radius:45%;
   background:linear-gradient(140deg,#ffead6,#ffd4a9);
-  border-radius:45% 55% 48% 52% / 45% 45% 55% 55%;
-}
-
-.plate{
-  width:240px;
-  height:240px;
-  display:grid;
-  place-items:center;
-  font-size:125px;
-  background:white;
-  border:12px solid #f5e7d8;
-  border-radius:50%;
-  box-shadow:0 20px 50px rgba(94,51,16,.15);
-}
-
-.float{
-  position:absolute;
-  display:grid;
-  place-items:center;
-  width:75px;
-  height:75px;
-  font-size:39px;
-  background:white;
-  border-radius:23px;
-  box-shadow:var(--shadow);
-}
-
-.float.one{
-  top:30px;
-  right:35px;
-  transform:rotate(10deg);
-}
-
-.float.two{
-  bottom:25px;
-  left:25px;
-  transform:rotate(-10deg);
-}
-
-/* NOTICE */
-
-.notice{
-  border:1px solid #f5d4b5;
-  background:#fff0e2;
-  color:#6d4529;
-  border-radius:14px;
-  padding:15px 18px;
-  font-size:13px;
-  line-height:1.6;
-  margin-bottom:55px;
-}
-
-/* SECTIONS */
-
-section{
-  scroll-margin-top:100px;
-}
-
-.section-head{
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:22px;
-}
-
-.section-head h2{
-  font-size:clamp(25px,4vw,35px);
-  letter-spacing:-1px;
-  margin:0 0 8px;
-}
-
-.section-head p{
-  color:var(--muted);
-  margin:0;
-  font-size:14px;
-}
-
-/* CATEGORIES */
-
-.categories{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:48px;
-}
-
-.cat{
-  border:1px solid var(--line);
-  background:white;
-  border-radius:14px;
-  padding:12px 16px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-weight:750;
-  color:#4b443d;
-  transition:.2s;
-}
-
-.cat span{font-size:20px}
-
-.cat:hover,
-.cat.active{
-  border-color:var(--orange);
-  background:#fff0e3;
-  color:#b84c00;
-}
-
-/* FOOD GRID */
-
-#menu{
-  padding-bottom:70px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:22px;
-}
-
-.food-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:20px;
-  overflow:hidden;
-  transition:.2s;
-}
-
-.food-card:hover{
-  transform:translateY(-4px);
-  box-shadow:var(--shadow);
-}
-
-.food-art{
-  height:200px;
-  position:relative;
-  overflow:hidden;
-  background:#fff0e2;
-}
-
-.food-art img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.food-tag{
-  position:absolute;
-  top:13px;
-  left:13px;
-  background:white;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:11px;
-  font-weight:850;
-}
-
-.food-info{
-  padding:18px;
-}
-
-.food-type{
-  font-size:12px;
-  font-weight:bold;
-}
-
-.food-info h3{
-  font-size:18px;
-  margin:7px 0 8px;
-}
-
-.food-info p{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-  min-height:40px;
-  margin:0 0 15px;
-}
-
-.food-bottom{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.price{
-  font-size:20px;
-  font-weight:900;
-}
-
-.add-button{
-  border:0;
-  background:var(--ink);
-  color:white;
-  padding:10px 15px;
-  border-radius:25px;
-  font-size:13px;
-  font-weight:800;
-}
-
-.add-button:hover{
-  background:var(--orange);
-}
-
-.empty-results{
-  grid-column:1/-1;
-  padding:45px 20px;
-  text-align:center;
-  background:white;
-  border-radius:18px;
-  color:var(--muted);
-}
-
-/* FOUNDER */
-
-#founder{
-  padding:70px 20px;
-  text-align:center;
-  background:linear-gradient(135deg,#171717,#302216);
-  color:white;
-  border-radius:24px;
-  margin:20px auto 55px;
-}
-
-.founder-label{
-  color:#ffb16b;
-  font-size:13px;
-  letter-spacing:4px;
-  font-weight:800;
-}
-
-.founder-photo{
-  width:170px;
-  height:170px;
-  border-radius:50%;
-  margin:25px auto;
-  overflow:hidden;
-  border:4px solid #ffb16b;
-  background:#493323;
-}
-
-.founder-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-#founder h2{
-  font-size:clamp(28px,5vw,48px);
-  margin:15px 0;
-}
-
-.role{
-  font-size:20px;
-  color:#ffb16b;
-  font-weight:700;
-}
-
-.founder-bio{
-  max-width:550px;
-  margin:18px auto;
-  line-height:1.8;
-  color:#ddd;
-}
-
-.founder-brand{
-  font-weight:800;
-  letter-spacing:2px;
-  margin-top:25px;
-}
-
-.tagline{
-  color:#ffb16b;
-  font-style:italic;
-}
-
-/* FOOTER */
-
-footer{
-  border-top:1px solid var(--line);
-  text-align:center;
-  padding:35px 20px;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.footer-brand{
-  font-size:27px;
-  color:var(--ink);
-  font-weight:950;
-}
-
-/* CART */
-
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(25,20,16,.48);
-  z-index:40;
-  opacity:0;
-  visibility:hidden;
-  transition:.2s;
-}
-
-.overlay.show{
-  opacity:1;
-  visibility:visible;
-}
-
-.drawer{
-  position:fixed;
-  z-index:41;
-  top:0;
-  right:0;
-  width:min(430px,100%);
-  height:100%;
-  background:white;
-  padding:25px;
-  transform:translateX(100%);
-  transition:.25s ease;
-  display:flex;
-  flex-direction:column;
-}
-
-.drawer.open{
-  transform:translateX(0);
-}
-
-.drawer-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid var(--line);
-  padding-bottom:18px;
-}
-
-.drawer-head h2{
-  margin:0;
-}
-
-.icon-button{
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:50%;
-  background:#f5f1ed;
-  font-size:21px;
-}
-
-.cart-items{
-  flex:1;
-  overflow-y:auto;
-  padding:12px 0;
-}
-
-.cart-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px 0;
-  border-bottom:1px solid var(--line);
-}
-
-.cart-emoji{
-  width:55px;
-  height:55px;
-  display:grid;
-  place-items:center;
-  background:#fff0e2;
-  border-radius:13px;
-  font-size:28px;
-}
-
-.cart-detail{
-  flex:1;
-  min-width:0;
-}
-
-.cart-detail strong{
-  display:block;
-  font-size:14px;
-}
-
-.cart-detail small{
-  color:var(--muted);
-}
-
-.quantity{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  margin-top:7px;
-}
-
-.quantity button{
-  width:25px;
-  height:25px;
-  border:1px solid var(--line);
-  background:white;
-  border-radius:50%;
-}
-
-.cart-summary{
-  border-top:1px solid var(--line);
-  padding-top:18px;
-}
-
-.total-row{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:17px;
-  font-size:18px;
-  font-weight:900;
-}
-
-.checkout-button{
-  width:100%;
-}
-
-.checkout-button:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-/* CHECKOUT */
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:rgba(25,20,16,.58);
-}
-
-.modal.show{
-  display:flex;
-}
-
-.modal-card{
-  width:min(460px,100%);
-  max-height:90vh;
-  overflow-y:auto;
-  background:white;
-  border-radius:22px;
-  padding:25px;
-}
-
-.modal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.modal-head h2{
-  margin:0;
-}
-
-.demo-note{
-  background:#fff0e2;
-  color:#74451f;
-  border-radius:12px;
-  padding:12px;
-  font-size:12px;
-  line-height:1.6;
-  margin:17px 0;
-}
-
-.field{
-  margin-bottom:15px;
-}
-
-.field label{
-  display:block;
-  margin-bottom:7px;
-  font-size:13px;
-  font-weight:800;
-}
-
-.field input{
-  width:100%;
-  padding:13px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  outline:none;
-}
-
-.field input:focus{
-  border-color:var(--orange);
-}
-
-/* TOAST */
-
-.toast{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translate(-50%,20px);
-  background:#24201d;
-  color:white;
-  padding:13px 20px;
-  border-radius:30px;
-  z-index:70;
-  opacity:0;
-  pointer-events:none;
-  transition:.2s;
-  text-align:center;
-  width:max-content;
-  max-width:calc(100% - 30px);
-  font-size:13px;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translate(-50%,0);
-}
-
-/* MOBILE */
-
-@media(max-width:800px){
-  .hero{
-    grid-template-columns:1fr;
-    padding-top:45px;
-  }
-
-  .hero-art{
-    min-height:290px;
-  }
-
-  .grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .search-wrap{
-    width:210px;
-  }
-}
-
-@media(max-width:520px){
-  .container{
-    width:calc(100% - 28px);
-  }
-
-  .nav{
-    min-height:68px;
-  }
-
-  .brand{
-    font-size:24px;
-  }
-
-  .search-wrap{
-    width:42px;
-    padding:10px;
-  }
-
-  .search-wrap input{
-    display:none;
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  .hero-art{
-    min-height:250px;
-  }
-
-  .plate{
-    width:165px;
-    height:165px;
-    font-size:85px;
-  }
+  display:grid;place-items:center;font-size:130px;
+}
+.eyebrow {color:var(--dark);font-weight:800;letter-spacing:2px}
+.notice {
+  background:#fff0e2;border:1px solid #f5d4b5;
+  border-radius:12px;padding:14px;line-height:1.6;
+  color:#704629;font-size:13px;margin:15px 0 25px;
+}
+h2 {font-size:30px}
+.section-head {
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;flex-wrap:wrap;
+}
+.categories {display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.cat {
+  border:1px solid var(--line);background:white;
+  padding:11px 15px;border-radius:25px;font-weight:700;
+}
+.cat.active,.cat:hover {background:#fff0e3;border-color:var(--orange)}
+.grid {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;
+}
+.food-card {
+  background:white;border:1px solid var(--line);
+  border-radius:18px;overflow:hidden;
+}
+.food-art {
+  height:170px;background:#fff0e2;
+  display:grid;place-items:center;font-size:65px;
+}
+.food-art img {width:100%;height:100%;object-fit:cover}
+.food-info {padding:16px}
+.food-info h3 {margin:8px 0}
+.muted {color:var(--muted);font-size:13px}
+.food-bottom {display:flex;justify-content:space-between;align-items:center}
+.price {font-weight:900;font-size:19px}
+.add-button {
+  background:var(--ink);color:white;border:0;
+  border-radius:20px;padding:9px 15px;font-weight:700;
+}
+.panel {
+  background:white;border:1px solid var(--line);
+  border-radius:18px;padding:25px;margin:18px 0;
+}
+.panel h2 {margin-top:0}
+.field {margin:15px 0}
+.field label {display:block;font-weight:700;margin-bottom:7px}
+.field input,.field textarea {
+  width:100%;padding:13px;border:1px solid var(--line);
+  border-radius:10px;background:white;
+}
+.field textarea {min-height:80px;resize:vertical}
+.row {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:15px;flex-wrap:wrap;
+}
+.option {
+  display:flex;justify-content:space-between;align-items:center;
+  border:1px solid var(--line);border-radius:12px;
+  padding:16px;margin:12px 0;gap:10px;
+}
+.option small {display:block;color:var(--muted);margin-top:5px}
+.option input {accent-color:var(--orange)}
+.map-placeholder {
+  min-height:270px;border-radius:15px;
+  background:
+    linear-gradient(35deg,transparent 47%,#d4d0c8 48%,#d4d0c8 51%,transparent 52%),
+    linear-gradient(120deg,transparent 45%,#d4d0c8 46%,#d4d0c8 49%,transparent 50%),
+    #e9f0e4;
+  display:grid;place-items:center;text-align:center;padding:20px;
+}
+.map-placeholder strong {display:block;font-size:19px}
+.cart-row {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;border-bottom:1px solid var(--line);padding:13px 0;
+}
+.qty {display:flex;align-items:center;gap:9px}
+.qty button {
+  border:1px solid var(--line);background:white;
+  border-radius:50%;width:27px;height:27px;
+}
+.empty {padding:30px;text-align:center;color:var(--muted)}
+#founder {
+  background:#211e1b;color:white;text-align:center;
+  border-radius:20px;padding:45px 20px;margin:30px 0;
+}
+#founder h2 {font-size:clamp(26px,5vw,43px)}
+#founder .role {color:#ffb16b;font-weight:800}
+#founder p {line-height:1.7}
+footer {
+  text-align:center;padding:35px 15px;
+  border-top:1px solid var(--line);color:var(--muted);
+}
+.toast {
+  position:fixed;bottom:20px;left:50%;
+  transform:translateX(-50%);background:#24201d;
+  color:white;padding:13px 20px;border-radius:30px;
+  display:none;z-index:30;
+}
+.toast.show {display:block}
+@media(max-width:760px) {
+  .hero {grid-template-columns:1fr;padding:35px 0}
+  .grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav {padding:12px 0}
+}
+@media(max-width:500px) {
+  .grid {grid-template-columns:1fr}
+  .nav-links {gap:10px}
+  .nav-links button {font-size:12px}
+  .hero-art {min-height:220px;font-size:95px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
   <div class="container nav">
-
-    <a class="brand" href="#">
-      CRAV<span>ORA</span>
-    </a>
-
-    <div class="nav-right">
-
-      <label class="search-wrap">
-        <span>🔎</span>
-        <input
-          id="search"
-          type="search"
-          placeholder="Search food..."
-          aria-label="Search food"
-        >
-      </label>
-
-      <button class="cart-button" id="openCart">
-        🛒 Cart (<span id="cartCount">0</span>)
-      </button>
-
-    </div>
+    <a class="brand" href="#" onclick="showPage('home')">CRAV<span>ORA</span></a>
+    <nav class="nav-links">
+      <button onclick="showPage('home')">Home</button>
+      <button onclick="showPage('menu')">Menu</button>
+      <button onclick="showPage('profile')">Profile</button>
+      <button onclick="showPage('orders')">Orders</button>
+      <button onclick="showPage('tracking')">Tracking</button>
+      <button onclick="showPage('cart')">Cart (<span id="cartCount">0</span>)</button>
+    </nav>
   </div>
 </header>
 
 <main class="container">
 
-<section class="hero">
-
-  <div>
-
-    <div class="eyebrow">
-      🍴 Good food, good mood
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="hero">
+    <div>
+      <span class="eyebrow">GOOD FOOD, GOOD MOOD</span>
+      <h1>Every craving.<br><span>Delivered.</span></h1>
+      <p>Discover your favourite meals and explore the Cravora food experience.</p>
+      <button class="primary" onclick="showPage('menu')">Explore menu →</button>
     </div>
-
-    <h1>
-      Every craving.<br>
-      <span>Delivered.</span>
-    </h1>
-
-    <p>
-      Discover your next favourite meal. Explore tasty picks,
-      add them to your cart, and try the Cravora ordering experience.
-    </p>
-
-    <button class="primary" id="exploreMenu">
-      Explore the menu →
-    </button>
-
+    <div class="hero-art">🍔</div>
   </div>
 
-  <div class="hero-art">
-
-    <div class="plate">🍔</div>
-
-    <div class="float one">🍕</div>
-
-    <div class="float two">🍟</div>
-
+  <div class="notice">
+    <strong>Cravora build status:</strong>
+    This single-file version is an interactive front-end foundation.
+    Live ordering, accounts, payments and GPS tracking require the production backend.
   </div>
 
+  <div class="panel">
+    <h2>Welcome to Cravora</h2>
+    <p class="muted">Explore food, manage your cart and view the planned customer services.</p>
+    <button class="primary" onclick="showPage('menu')">Start ordering</button>
+  </div>
+
+  <div id="founder">
+    <span class="eyebrow">MEET THE TEAM</span>
+    <h2>T. JASWANTH REDDY</h2>
+    <p class="role">Founder of Cravora</p>
+    <p>G. Dhanush</p>
+    <p class="role">Co-founder of Cravora</p>
+    <p>CRAVORA — Every Craving, Delivered.</p>
+  </div>
 </section>
 
-<div class="notice">
-  <strong>Prototype preview:</strong>
-  Food listings and prices are examples.
-  This demo does not process real payments or send real orders.
-</div>
-
-<section>
-
-  <div class="section-head">
-
-    <div>
-      <h2>What are you craving?</h2>
-      <p>Choose a category to explore</p>
-    </div>
-
-  </div>
-
+<!-- MENU -->
+<section id="menu" class="page">
+  <h2>What are you craving?</h2>
+  <p class="muted">Choose a category and add food to your cart.</p>
   <div class="categories" id="categories">
-
-    <button class="cat active" data-category="All">
-      <span>🍽️</span> All food
-    </button>
-
-    <button class="cat" data-category="Biryani">
-      <span>🍛</span> Biryani
-    </button>
-
-    <button class="cat" data-category="Pizza">
-      <span>🍕</span> Pizza
-    </button>
-
-    <button class="cat" data-category="Burgers">
-      <span>🍔</span> Burgers
-    </button>
-
-    <button class="cat" data-category="South Indian">
-      <span>🥞</span> South Indian
-    </button>
-
-    <button class="cat" data-category="Desserts">
-      <span>🍰</span> Desserts
-    </button>
-
-    <button class="cat" data-category="Drinks">
-      <span>🥤</span> Drinks
-    </button>
-
-    <button class="cat" data-category="Veg">
-      <span>🟢</span> Veg
-    </button>
-
-    <button class="cat" data-category="Non-Veg">
-      <span>🔴</span> Non-Veg
-    </button>
-
+    <button class="cat active" data-cat="All">🍽️ All</button>
+    <button class="cat" data-cat="Biryani">🍛 Biryani</button>
+    <button class="cat" data-cat="Pizza">🍕 Pizza</button>
+    <button class="cat" data-cat="Burgers">🍔 Burgers</button>
+    <button class="cat" data-cat="South Indian">🥞 South Indian</button>
+    <button class="cat" data-cat="Desserts">🍰 Desserts</button>
+    <button class="cat" data-cat="Drinks">🥤 Drinks</button>
+    <button class="cat" data-cat="Veg">🟢 Veg</button>
+    <button class="cat" data-cat="Non-Veg">🔴 Non-Veg</button>
   </div>
-
-</section>
-
-<section id="menu">
-
-  <div class="section-head">
-
-    <div>
-      <h2>Popular near you</h2>
-      <p>Sample dishes for the Cravora demo</p>
-    </div>
-
-    <span id="resultCount"></span>
-
+  <div class="field">
+    <input id="search" type="search" placeholder="Search food...">
   </div>
-
   <div class="grid" id="foodGrid"></div>
-
 </section>
 
-<section id="founder">
-
-  <p class="founder-label">
-    MEET THE FOUNDER
-  </p>
-
-  <div class="founder-photo">
-    <img
-      src="founder.jpg"
-      alt="T. Jaswanth Reddy, founder of Cravora"
-      onerror="this.style.display='none'"
-    >
+<!-- CUSTOMER PROFILE -->
+<section id="profile" class="page">
+  <h2>Cravora Customer Profile</h2>
+  <div class="panel">
+    <h3>Customer information</h3>
+    <p class="muted">Your verified account details will appear here after secure authentication is connected.</p>
+    <div class="field">
+      <label>Full name</label>
+      <input id="customerName" placeholder="Your full name">
+    </div>
+    <div class="field">
+      <label>Phone number</label>
+      <input id="customerPhone" type="tel" placeholder="+91 phone number">
+    </div>
+    <div class="field">
+      <label>Email address</label>
+      <input id="customerEmail" type="email" placeholder="Your email">
+    </div>
+    <div class="field">
+      <label>Delivery address</label>
+      <textarea id="customerAddress" placeholder="Your delivery address"></textarea>
+    </div>
+    <button class="primary" onclick="saveProfile()">Save profile on this device</button>
+    <p class="muted">This local demo does not verify identity or securely sync your profile.</p>
   </div>
+</section>
 
-  <h2>T. JASWANTH REDDY</h2>
+<!-- CART -->
+<section id="cart" class="page">
+  <h2>Your Cart 🛒</h2>
+  <div class="panel">
+    <div id="cartItems"></div>
+    <div class="row">
+      <h3>Total</h3>
+      <h3 id="cartTotal">₹0</h3>
+    </div>
+    <button class="primary" onclick="showPage('checkout')">Continue to checkout</button>
+  </div>
+</section>
 
-  <p class="role">
-    Founder of Cravora
-  </p>
+<!-- CHECKOUT / PAYMENTS -->
+<section id="checkout" class="page">
+  <h2>Checkout & Payment</h2>
+  <div class="panel">
+    <h3>Delivery details</h3>
+    <p id="checkoutAddress" class="muted">Add your delivery address in Customer Profile.</p>
+    <h3>Choose payment method</h3>
+    <label class="option">
+      <span><strong>PhonePe</strong><small>UPI through an approved payment provider</small></span>
+      <input type="radio" name="payment" value="PhonePe">
+    </label>
+    <label class="option">
+      <span><strong>Google Pay</strong><small>UPI through a supported payment provider</small></span>
+      <input type="radio" name="payment" value="Google Pay">
+    </label>
+    <label class="option">
+      <span><strong>Cravora Wallet</strong><small>Wallet service subject to legal review and compliant provider setup</small></span>
+      <input type="radio" name="payment" value="Cravora Wallet" disabled>
+    </label>
+    <div class="notice">
+      Live payments are not enabled. Never enter your UPI PIN, OTP or banking password into this page.
+      Real payments must use an approved provider-hosted checkout and verified server callbacks.
+    </div>
+    <div class="row">
+      <strong>Order total</strong>
+      <strong id="checkoutTotal">₹0</strong>
+    </div>
+    <button class="primary" onclick="placeOrder()">Review demo order</button>
+  </div>
+</section>
 
-  <p class="founder-bio">
-    Building a better way to discover your favourite food.
-    Every craving deserves a delicious destination.
-  </p>
+<!-- ORDERS -->
+<section id="orders" class="page">
+  <h2>My Orders</h2>
+  <div class="panel">
+    <p class="muted">Your order history will appear here after the secure order backend is connected.</p>
+    <div id="orderHistory" class="empty">No orders recorded in this browser yet.</div>
+  </div>
+</section>
 
-  <p class="founder-brand">
-    CRAVORA 🚀
-  </p>
-
-  <p class="tagline">
-    Every Craving, Delivered.
-  </p>
-
+<!-- TRACKING -->
+<section id="tracking" class="page">
+  <h2>Delivery Tracking 📍</h2>
+  <div class="panel">
+    <div class="map-placeholder">
+      <div>
+        <div style="font-size:45px">📍</div>
+        <strong>Live delivery map integration pending</strong>
+        <p class="muted">The delivery partner's location will be shown for an active assigned order after GPS and map services are connected.</p>
+      </div>
+    </div>
+    <p class="muted">Location access must be permission-based and limited to an active delivery.</p>
+  </div>
 </section>
 
 </main>
 
 <footer>
-
-  <div class="footer-brand">
-    CRAV<span>ORA</span>
-  </div>
-
-  <p>
-    Every Craving, Delivered.
-  </p>
-
-  <p>
-    © <span id="year"></span> Cravora · Prototype website
-  </p>
-
+  <div class="brand">CRAV<span>ORA</span></div>
+  <p>Every Craving, Delivered.</p>
+  <p>Founder: T. Jaswanth Reddy · Co-founder: G. Dhanush</p>
+  <small>Cravora front-end starter · Live services not yet enabled</small>
 </footer>
 
-
-<!-- CART -->
-
-<div class="overlay" id="overlay"></div>
-
-<aside
-  class="drawer"
-  id="cartDrawer"
-  aria-hidden="true"
->
-
-  <div class="drawer-head">
-
-    <h2>Your cart 🛒</h2>
-
-    <button
-      class="icon-button"
-      id="closeCart"
-      aria-label="Close cart"
-    >
-      ×
-    </button>
-
-  </div>
-
-  <div class="cart-items" id="cartItems"></div>
-
-  <div class="cart-summary">
-
-    <div class="total-row">
-
-      <span>Total</span>
-
-      <span id="cartTotal">
-        ₹0
-      </span>
-
-    </div>
-
-    <button
-      class="checkout-button"
-      id="checkoutButton"
-      disabled
-    >
-      Continue to checkout
-    </button>
-
-  </div>
-
-</aside>
-
-
-<!-- CHECKOUT -->
-
-<div
-  class="modal"
-  id="checkoutModal"
->
-
-  <div class="modal-card">
-
-    <div class="modal-head">
-
-      <h2>
-        Checkout
-      </h2>
-
-      <button
-        class="icon-button"
-        id="closeCheckout"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div class="demo-note">
-      This is a demonstration only.
-      No real order or payment will be submitted.
-    </div>
-
-    <form id="checkoutForm">
-
-      <div class="field">
-
-        <label for="demoName">
-          Demo name
-        </label>
-
-        <input
-          id="demoName"
-          required
-          maxlength="60"
-          placeholder="Example: Alex"
-        >
-
-      </div>
-
-      <div class="field">
-
-        <label for="demoAddress">
-          Sample delivery address
-        </label>
-
-        <input
-          id="demoAddress"
-          required
-          maxlength="120"
-          placeholder="Example: 123 Sample Street"
-        >
-
-      </div>
-
-      <div class="total-row">
-
-        <span>
-          Demo total
-        </span>
-
-        <span id="checkoutTotal">
-          ₹0
-        </span>
-
-      </div>
-
-      <button
-        class="checkout-button"
-        type="submit"
-      >
-        Place Demo Order
-      </button>
-
-    </form>
-
-  </div>
-
-</div>
-
-
-<div
-  class="toast"
-  id="toast"
-  role="status"
-></div>
-
+<div class="toast" id="toast" role="status"></div>
 
 <script>
-
 const foods = [
-
-  {
-    id:1,
-    name:"Hyderabadi Chicken Biryani",
-    category:"Biryani",
-    foodType:"Non-Veg",
-    price:220,
-    emoji:"🍛",
-    image:"https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=900&q=85",
-    tag:"Bestseller",
-    description:"Aromatic rice with rich spices and flavour."
-  },
-
-  {
-    id:2,
-    name:"Paneer Biryani",
-    category:"Biryani",
-    foodType:"Veg",
-    price:180,
-    emoji:"🍚",
-    image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=85",
-    tag:"Veg favourite",
-    description:"Fragrant rice with paneer and Indian spices."
-  },
-
-  {
-    id:3,
-    name:"Classic Margherita Pizza",
-    category:"Pizza",
-    foodType:"Veg",
-    price:199,
-    emoji:"🍕",
-    image:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=900&q=85",
-    tag:"Popular",
-    description:"Cheesy pizza with tomato and herbs."
-  },
-
-  {
-    id:4,
-    name:"Farmhouse Pizza",
-    category:"Pizza",
-    foodType:"Veg",
-    price:279,
-    emoji:"🍕",
-    image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=85",
-    tag:"Loaded",
-    description:"A colourful mix of vegetables and cheese."
-  },
-
-  {
-    id:5,
-    name:"Classic Crispy Burger",
-    category:"Burgers",
-    foodType:"Non-Veg",
-    price:149,
-    emoji:"🍔",
-    image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=85",
-    tag:"Bestseller",
-    description:"A crispy chicken burger with fresh toppings."
-  },
-
-  {
-    id:6,
-    name:"Double Cheese Burger",
-    category:"Burgers",
-    foodType:"Veg",
-    price:219,
-    emoji:"🍔",
-    image:"https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=85",
-    tag:"Cheesy",
-    description:"A satisfying burger with extra cheese."
-  },
-
-  {
-    id:7,
-    name:"Masala Dosa",
-    category:"South Indian",
-    foodType:"Veg",
-    price:100,
-    emoji:"🥞",
-    image:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=900&q=85",
-    tag:"South Indian",
-    description:"Crispy dosa served with potato masala."
-  },
-
-  {
-    id:8,
-    name:"Idli & Sambar",
-    category:"South Indian",
-    foodType:"Veg",
-    price:70,
-    emoji:"🥣",
-    image:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=900&q=85",
-    tag:"Comfort food",
-    description:"Soft idlis with sambar and chutney."
-  },
-
-  {
-    id:9,
-    name:"Chocolate Brownie",
-    category:"Desserts",
-    foodType:"Veg",
-    price:110,
-    emoji:"🍫",
-    image:"https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=85",
-    tag:"Sweet treat",
-    description:"A rich chocolate dessert for your cravings."
-  },
-
-  {
-    id:10,
-    name:"Classic Cheesecake",
-    category:"Desserts",
-    foodType:"Veg",
-    price:160,
-    emoji:"🍰",
-    image:"https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=900&q=85",
-    tag:"Favourite",
-    description:"Creamy cheesecake with a biscuit base."
-  },
-
-  {
-    id:11,
-    name:"Cold Coffee",
-    category:"Drinks",
-    foodType:"Veg",
-    price:99,
-    emoji:"🥤",
-    image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=900&q=85",
-    tag:"Chilled",
-    description:"A refreshing coffee drink served cold."
-  },
-
-  {
-    id:12,
-    name:"Fresh Lemonade",
-    category:"Drinks",
-    foodType:"Veg",
-    price:60,
-    emoji:"🍋",
-    image:"https://images.unsplash.com/photo-1513558161293-cdaf765edfd47?auto=format&fit=crop&w=900&q=85",
-    tag:"Refreshing",
-    description:"A refreshing lemon drink for any time."
-  }
-
+ {id:1,name:"Hyderabadi Chicken Biryani",category:"Biryani",type:"Non-Veg",price:220,emoji:"🍛",tag:"Bestseller",desc:"Aromatic rice with rich spices."},
+ {id:2,name:"Paneer Biryani",category:"Biryani",type:"Veg",price:180,emoji:"🍚",tag:"Veg favourite",desc:"Fragrant rice with paneer."},
+ {id:3,name:"Classic Margherita Pizza",category:"Pizza",type:"Veg",price:199,emoji:"🍕",tag:"Popular",desc:"Cheese, tomato and herbs."},
+ {id:4,name:"Farmhouse Pizza",category:"Pizza",type:"Veg",price:279,emoji:"🍕",tag:"Loaded",desc:"Vegetables and cheese."},
+ {id:5,name:"Classic Crispy Burger",category:"Burgers",type:"Non-Veg",price:149,emoji:"🍔",tag:"Bestseller",desc:"Crispy chicken burger."},
+ {id:6,name:"Double Cheese Burger",category:"Burgers",type:"Veg",price:219,emoji:"🍔",tag:"Cheesy",desc:"Burger with extra cheese."},
+ {id:7,name:"Masala Dosa",category:"South Indian",type:"Veg",price:100,emoji:"🥞",tag:"South Indian",desc:"Crispy dosa with potato masala."},
+ {id:8,name:"Idli & Sambar",category:"South Indian",type:"Veg",price:70,emoji:"🥣",tag:"Comfort food",desc:"Soft idlis with sambar."},
+ {id:9,name:"Chocolate Brownie",category:"Desserts",type:"Veg",price:110,emoji:"🍫",tag:"Sweet treat",desc:"Rich chocolate dessert."},
+ {id:10,name:"Classic Cheesecake",category:"Desserts",type:"Veg",price:160,emoji:"🍰",tag:"Favourite",desc:"Creamy cheesecake."},
+ {id:11,name:"Cold Coffee",category:"Drinks",type:"Veg",price:99,emoji:"🥤",tag:"Chilled",desc:"Cold coffee drink."},
+ {id:12,name:"Fresh Lemonade",category:"Drinks",type:"Veg",price:60,emoji:"🍋",tag:"Refreshing",desc:"Fresh lemon drink."}
 ];
 
-let selectedCategory = "All";
-
+let category = "All";
 let cart = {};
+let orders = [];
 
-const foodGrid = document.getElementById("foodGrid");
-const searchInput = document.getElementById("search");
-const cartDrawer = document.getElementById("cartDrawer");
-const overlay = document.getElementById("overlay");
-const checkoutModal = document.getElementById("checkoutModal");
-const toast = document.getElementById("toast");
+const $ = id => document.getElementById(id);
+const money = n => "₹" + n.toLocaleString("en-IN");
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
-
-
-function formatPrice(amount){
-
-  return "₹" + amount.toLocaleString("en-IN");
-
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  $(id).classList.add("active");
+  if(id === "cart") renderCart();
+  if(id === "checkout") updateCheckout();
+  if(id === "orders") renderOrders();
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-
-function renderFoods(){
-
-  const query =
-    searchInput.value.trim().toLowerCase();
-
-  const filtered =
-    foods.filter(food => {
-
-      const categoryMatches =
-        selectedCategory === "All" ||
-        selectedCategory === "Veg" ||
-        selectedCategory === "Non-Veg"
-          ? (
-              selectedCategory === "All"
-                ? true
-                : food.foodType === selectedCategory
-            )
-          : food.category === selectedCategory;
-
-      const searchMatches =
-        [
-          food.name,
-          food.category,
-          food.description,
-          food.foodType
-        ].some(value =>
-          value.toLowerCase().includes(query)
-        );
-
-      return categoryMatches && searchMatches;
-
-    });
-
-
-  document.getElementById("resultCount").textContent =
-    filtered.length +
-    (filtered.length === 1 ? " item" : " items");
-
-
-  if(filtered.length === 0){
-
-    foodGrid.innerHTML = `
-      <div class="empty-results">
-
-        <div style="font-size:42px">
-          🔎
-        </div>
-
-        <h3>
-          No dishes found
-        </h3>
-
-        <p>
-          Try another search or category.
-        </p>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  foodGrid.innerHTML =
-    filtered.map(food => `
-
-      <article class="food-card">
-
-        <div class="food-art">
-
-          <img
-            src="${food.image}"
-            alt="${food.name}"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
-
-          <span class="food-tag">
-            ${food.tag}
-          </span>
-
-        </div>
-
-        <div class="food-info">
-
-          <span class="food-type">
-            ${
-              food.foodType === "Veg"
-                ? "🟢 Veg"
-                : "🔴 Non-Veg"
-            }
-          </span>
-
-          <h3>
-            ${food.name}
-          </h3>
-
-          <p>
-            ${food.description}
-          </p>
-
-          <div class="food-bottom">
-
-            <span class="price">
-              ${formatPrice(food.price)}
-            </span>
-
-            <button
-              class="add-button"
-              data-add="${food.id}"
-            >
-              + Add
-            </button>
-
-          </div>
-
-        </div>
-
-      </article>
-
-    `).join("");
-
+function notify(message) {
+  $("toast").textContent = message;
+  $("toast").classList.add("show");
+  setTimeout(() => $("toast").classList.remove("show"),2500);
 }
 
-
-function showToast(message){
-
-  toast.textContent = message;
-
-  toast.classList.add("show");
-
-  clearTimeout(showToast.timeout);
-
-  showToast.timeout =
-    setTimeout(() => {
-
-      toast.classList.remove("show");
-
-    },2400);
-
-}
-
-
-function addToCart(id){
-
-  cart[id] =
-    (cart[id] || 0) + 1;
-
-  renderCart();
-
-  showToast("Added to your cart 🛒");
-
-}
-
-
-function changeQuantity(id,amount){
-
-  cart[id] =
-    (cart[id] || 0) + amount;
-
-  if(cart[id] <= 0){
-
-    delete cart[id];
-
-  }
-
-  renderCart();
-
-}
-
-
-function getCartCount(){
-
-  return Object.values(cart)
-    .reduce(
-      (sum,quantity) =>
-        sum + quantity,
-      0
-    );
-
-}
-
-
-function getCartTotal(){
-
-  return foods.reduce(
-    (sum,food) =>
-      sum +
-      food.price *
-      (cart[food.id] || 0),
-    0
-  );
-
-}
-
-
-function renderCart(){
-
-  const cartItems =
-    document.getElementById("cartItems");
-
-  const entries =
-    foods.filter(food =>
-      cart[food.id]
-    );
-
-
-  document.getElementById("cartCount")
-    .textContent =
-      getCartCount();
-
-
-  document.getElementById("cartTotal")
-    .textContent =
-      formatPrice(getCartTotal());
-
-
-  document.getElementById("checkoutTotal")
-    .textContent =
-      formatPrice(getCartTotal());
-
-
-  document.getElementById("checkoutButton")
-    .disabled =
-      entries.length === 0;
-
-
-  if(entries.length === 0){
-
-    cartItems.innerHTML = `
-
-      <div style="
-        text-align:center;
-        padding:55px 10px;
-        color:#777;
-      ">
-
-        <div style="font-size:55px">
-          🛒
-        </div>
-
-        <h3>
-          Your cart is empty
-        </h3>
-
-        <p>
-          Add something delicious to get started.
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-
-  cartItems.innerHTML =
-    entries.map(food => `
-
-      <div class="cart-row">
-
-        <div class="cart-emoji">
-          ${food.emoji}
-        </div>
-
-        <div class="cart-detail">
-
-          <strong>
-            ${food.name}
-          </strong>
-
-          <small>
-            ${formatPrice(food.price)} each
-          </small>
-
-          <div class="quantity">
-
-            <button
-              data-change="${food.id}"
-              data-amount="-1"
-            >
-              −
-            </button>
-
-            <span>
-              ${cart[food.id]}
-            </span>
-
-            <button
-              data-change="${food.id}"
-              data-amount="1"
-            >
-              +
-            </button>
-
-          </div>
-
-        </div>
-
-        <strong>
-          ${formatPrice(
-            food.price *
-            cart[food.id]
-          )}
-        </strong>
-
-      </div>
-
-    `).join("");
-
-}
-
-
-function openCart(){
-
-  cartDrawer.classList.add("open");
-
-  cartDrawer.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  overlay.classList.add("show");
-
-}
-
-
-function closeCart(){
-
-  cartDrawer.classList.remove("open");
-
-  cartDrawer.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  overlay.classList.remove("show");
-
-}
-
-
-function openCheckout(){
-
-  if(getCartCount() === 0)
-    return;
-
-  closeCart();
-
-  checkoutModal.classList.add("show");
-
-}
-
-
-function closeCheckout(){
-
-  checkoutModal.classList.remove("show");
-
-}
-
-
-/* CATEGORY FILTER */
-
-document
-  .getElementById("categories")
-  .addEventListener("click",event => {
-
-    const button =
-      event.target.closest(
-        "[data-category]"
-      );
-
-    if(!button)
-      return;
-
-    selectedCategory =
-      button.dataset.category;
-
-    document
-      .querySelectorAll(".cat")
-      .forEach(categoryButton => {
-
-        categoryButton.classList.toggle(
-          "active",
-          categoryButton === button
-        );
-
-      });
-
-    renderFoods();
-
+function renderFoods() {
+  const query = $("search").value.toLowerCase().trim();
+  const list = foods.filter(f => {
+    const categoryMatch =
+      category === "All" ||
+      category === "Veg" || category === "Non-Veg"
+        ? category === "All" || f.type === category
+        : f.category === category;
+    return categoryMatch &&
+      (f.name + " " + f.category + " " + f.desc + " " + f.type).toLowerCase().includes(query);
   });
 
+  $("foodGrid").innerHTML = list.length ? list.map(f => `
+    <article class="food-card">
+      <div class="food-art">${f.emoji}</div>
+      <div class="food-info">
+        <span class="muted">${f.type === "Veg" ? "🟢 Veg" : "🔴 Non-Veg"} · ${f.tag}</span>
+        <h3>${f.name}</h3>
+        <p class="muted">${f.desc}</p>
+        <div class="food-bottom">
+          <span class="price">${money(f.price)}</span>
+          <button class="add-button" onclick="addToCart(${f.id})">+ Add</button>
+        </div>
+      </div>
+    </article>`).join("") :
+    `<div class="empty">No matching dishes found.</div>`;
+}
 
-/* SEARCH */
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  updateCount();
+  notify("Added to your cart 🛒");
+}
 
-searchInput.addEventListener(
-  "input",
-  renderFoods
-);
+function changeQty(id,delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if(cart[id] <= 0) delete cart[id];
+  updateCount();
+  renderCart();
+}
 
+function total() {
+  return foods.reduce((sum,f) => sum + f.price * (cart[f.id] || 0),0);
+}
 
-/* ADD TO CART */
+function count() {
+  return Object.values(cart).reduce((a,b) => a+b,0);
+}
 
-foodGrid.addEventListener(
-  "click",
-  event => {
+function updateCount() {
+  $("cartCount").textContent = count();
+}
 
-    const button =
-      event.target.closest(
-        "[data-add]"
-      );
+function renderCart() {
+  const items = foods.filter(f => cart[f.id]);
+  $("cartItems").innerHTML = items.length ? items.map(f => `
+    <div class="cart-row">
+      <div>${f.emoji} <strong>${f.name}</strong></div>
+      <div class="qty">
+        <button onclick="changeQty(${f.id},-1)">−</button>
+        <span>${cart[f.id]}</span>
+        <button onclick="changeQty(${f.id},1)">+</button>
+      </div>
+      <strong>${money(f.price * cart[f.id])}</strong>
+    </div>`).join("") : `<div class="empty">Your cart is empty. Explore the menu to add food.</div>`;
+  $("cartTotal").textContent = money(total());
+}
 
-    if(!button)
-      return;
+function saveProfile() {
+  const profile = {
+    name:$("customerName").value.trim(),
+    phone:$("customerPhone").value.trim(),
+    email:$("customerEmail").value.trim(),
+    address:$("customerAddress").value.trim()
+  };
+  localStorage.setItem("cravora_profile",JSON.stringify(profile));
+  notify("Profile saved on this device.");
+  updateCheckout();
+}
 
-    addToCart(
-      Number(button.dataset.add)
-    );
+function loadProfile() {
+  const p = JSON.parse(localStorage.getItem("cravora_profile") || "{}");
+  $("customerName").value = p.name || "";
+  $("customerPhone").value = p.phone || "";
+  $("customerEmail").value = p.email || "";
+  $("customerAddress").value = p.address || "";
+}
 
+function updateCheckout() {
+  const p = JSON.parse(localStorage.getItem("cravora_profile") || "{}");
+  $("checkoutAddress").textContent = p.address || "Add your delivery address in Customer Profile.";
+  $("checkoutTotal").textContent = money(total());
+}
+
+function placeOrder() {
+  if(count() === 0) {
+    notify("Your cart is empty.");
+    showPage("menu");
+    return;
   }
-);
-
-
-/* QUANTITY */
-
-document
-  .getElementById("cartItems")
-  .addEventListener(
-    "click",
-    event => {
-
-      const button =
-        event.target.closest(
-          "[data-change]"
-        );
-
-      if(!button)
-        return;
-
-      changeQuantity(
-        Number(button.dataset.change),
-        Number(button.dataset.amount)
-      );
-
-    }
-  );
-
-
-/* CART */
-
-document
-  .getElementById("openCart")
-  .addEventListener(
-    "click",
-    openCart
-  );
-
-document
-  .getElementById("closeCart")
-  .addEventListener(
-    "click",
-    closeCart
-  );
-
-overlay.addEventListener(
-  "click",
-  closeCart
-);
-
-
-/* CHECKOUT */
-
-document
-  .getElementById("checkoutButton")
-  .addEventListener(
-    "click",
-    openCheckout
-  );
-
-document
-  .getElementById("closeCheckout")
-  .addEventListener(
-    "click",
-    closeCheckout
-  );
-
-
-checkoutModal.addEventListener(
-  "click",
-  event => {
-
-    if(event.target === checkoutModal){
-
-      closeCheckout();
-
-    }
-
+  const p = JSON.parse(localStorage.getItem("cravora_profile") || "{}");
+  if(!p.name || !p.address) {
+    notify("Please save your name and address in Profile first.");
+    showPage("profile");
+    return;
   }
-);
-
-
-/* PLACE DEMO ORDER */
-
-document
-  .getElementById("checkoutForm")
-  .addEventListener(
-    "submit",
-    event => {
-
-      event.preventDefault();
-
-      const itemCount =
-        getCartCount();
-
-      const total =
-        formatPrice(
-          getCartTotal()
-        );
-
-      closeCheckout();
-
-      cart = {};
-
-      renderCart();
-
-      event.target.reset();
-
-      showToast(
-        `🎉 Demo order placed! ${itemCount} item(s) · ${total}`
-      );
-
-    }
-  );
-
-
-/* EXPLORE */
-
-document
-  .getElementById("exploreMenu")
-  .addEventListener(
-    "click",
-    () => {
-
-      document
-        .getElementById("menu")
-        .scrollIntoView({
-          behavior:"smooth"
-        });
-
-    }
-  );
-
-
-/* ESCAPE */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if(event.key === "Escape"){
-
-      closeCart();
-      closeCheckout();
-
-    }
-
+  const payment = document.querySelector('input[name="payment"]:checked');
+  if(!payment) {
+    notify("Please choose a payment option.");
+    return;
   }
-);
+  if(payment.value === "Cravora Wallet") {
+    notify("Wallet is not enabled.");
+    return;
+  }
+  notify("This is a review only. No payment or order was submitted.");
+}
 
+function renderOrders() {
+  $("orderHistory").textContent =
+    "No completed live orders. This starter does not submit real orders.";
+}
 
-/* START */
+$("categories").addEventListener("click",e => {
+  const btn = e.target.closest("[data-cat]");
+  if(!btn) return;
+  category = btn.dataset.cat;
+  document.querySelectorAll(".cat").forEach(b => b.classList.toggle("active",b === btn));
+  renderFoods();
+});
 
+$("search").addEventListener("input",renderFoods);
+
+loadProfile();
 renderFoods();
-
 renderCart();
-
 </script>
-
 </body>
 </html>
-```
